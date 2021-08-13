@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 import Timer from "./Timer";
 
-import * as eventApi from "../../services/event";
+import { useGetEventInfo } from "../../hooks/useApi/event";
 
 export default function Countdown() {
-  const [eventInfo, loadingEventInfo] = eventApi.getInfo();
+  const [eventInfo, loadingEventInfo] = useGetEventInfo();
 
   if (loadingEventInfo) {
     return "Loading...";

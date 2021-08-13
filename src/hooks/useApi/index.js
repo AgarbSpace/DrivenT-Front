@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import qs from "qs";
 
-import api from "../services/api";
+import api from "../../services/api";
 
 export default function useApi({ method, url, body, query = {}, headers }, immediately = true) {
   const [data, setData] = useState(null);
