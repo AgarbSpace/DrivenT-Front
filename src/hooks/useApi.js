@@ -8,13 +8,12 @@ export default function useApi({ method, url, body, query = {}, headers }, immed
   const [loading, setLoading] = useState(immediately);
   const [error, setError] = useState(null);
   const [response, setResponse] = useState(null);
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
-    if (immediately || count > 0) {
+    if (immediately) {
       act();
     }
-  }, [count]);
+  }, []);
 
   function act() {
     setLoading(true);
@@ -41,9 +40,5 @@ export default function useApi({ method, url, body, query = {}, headers }, immed
     });
   }
 
-  function repeat() {
-    setCount(count + 1);
-  }
-
-  return [data, loading, error, response, repeat];
+  return [data, loading, error, response, act];
 }
