@@ -5,7 +5,7 @@ import api from "../services/api";
 
 export default function useApi({ method, url, body, query = {}, headers }, immediately = true) {
   const [data, setData] = useState(null);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(immediately);
   const [error, setError] = useState(null);
   const [response, setResponse] = useState(null);
   const [count, setCount] = useState(0);
