@@ -3,7 +3,7 @@ import qs from "qs";
 
 import api from "../services/api";
 
-export default function useApi({ method, url, body, query = {}, headers }) {
+export default function useApi({ method, url, body, query = {}, headers }, immediately = true) {
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -11,15 +11,21 @@ export default function useApi({ method, url, body, query = {}, headers }) {
   const [count, setCount] = useState(0);
 
   useEffect(() => {
-    act();
+    if (immediately || count > 0) {
+      act();
+    }
   }, [count]);
 
   function act() {
     setLoading(true);
+
+    if (Object.keys(query).length > 0) {
+      url = url + qs.stringify(query);
+    }
     
     api({
       method,
-      url: url + qs.stringify(query),
+      url: url,
       data: body,
       headers
     }).then(response => {
