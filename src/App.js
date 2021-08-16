@@ -6,14 +6,18 @@ import {
 
 import Countdown from "./pages/Countdown";
 
+import { EventInfoProvider } from "./contexts/EventInfoContext";
+
 export default function App() {
   return (
-    <Router>
-      <Switch>
-        <Route path="/" exact>
-          <Countdown />
-        </Route>
-      </Switch>
-    </Router>
+    <EventInfoProvider>
+      <Router>
+        <Switch>
+          <Route path="/" exact>
+            <Countdown />
+          </Route>
+        </Switch>
+      </Router>
+    </EventInfoProvider>
   );
 }
