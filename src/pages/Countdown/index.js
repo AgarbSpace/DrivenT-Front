@@ -1,11 +1,12 @@
+import { useContext } from "react";
 import styled from "styled-components";
 
 import Timer from "./Timer";
 
-import { useGetEventInfo } from "../../hooks/useApi/event";
+import EventInfoContext from "../../contexts/EventInfoContext";
 
 export default function Countdown() {
-  const [eventInfo, loadingEventInfo] = useGetEventInfo();
+  const { eventInfo, loadingEventInfo } = useContext(EventInfoContext);
 
   if (loadingEventInfo) {
     return "Loading...";
