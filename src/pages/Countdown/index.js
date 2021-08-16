@@ -22,7 +22,7 @@ export default function Countdown() {
 }
 
 const Page = styled.div`
-  background-image: url(${props => props.backgroundImage});
+  background-image: ${props => props.backgroundImage};
   background-size: cover;
   min-height: 100vh;
   width: 100%;
@@ -35,5 +35,9 @@ const Page = styled.div`
 
   & > *:not(:last-child) {
     margin-bottom: 24px;
+  }
+
+  & > * {
+    text-align: center;
   }
 `;
