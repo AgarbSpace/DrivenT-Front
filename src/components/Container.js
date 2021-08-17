@@ -17,6 +17,7 @@ export default styled.div`
   @media (max-width: 600px) {
     border-radius: 0;
     min-height: 100vh;
+    height: auto;
     max-height: initial;
     min-width: 100%;
     max-width: initial;
