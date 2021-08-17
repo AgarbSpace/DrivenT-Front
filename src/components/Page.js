@@ -19,4 +19,8 @@ export default styled.div`
   & > * {
     text-align: center;
   }
+
+  @media (max-width: 600px) {
+    padding: 0;
+  }
 `;
