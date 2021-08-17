@@ -18,5 +18,7 @@ export default styled.div`
     border-radius: 0;
     min-height: 100vh;
     max-height: initial;
+    min-width: 100%;
+    max-width: initial;
   }
 `;
