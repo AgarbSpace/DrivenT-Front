@@ -13,7 +13,7 @@ export default function Countdown() {
   }
 
   return (
-    <Page backgroundImage={eventInfo.backgroundImage}>
+    <Page background={eventInfo.backgroundImage}>
       <div>Faltam</div>
       <Timer time={eventInfo.startDate} />
       <div>Para as inscrições</div>
