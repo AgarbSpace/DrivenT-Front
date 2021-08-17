@@ -1,7 +1,7 @@
 import { useContext } from "react";
-import styled from "styled-components";
 
 import Timer from "./Timer";
+import Page from "../../components/Page";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
@@ -20,24 +20,3 @@ export default function Countdown() {
     </Page>
   );
 }
-
-const Page = styled.div`
-  background-image: ${props => props.backgroundImage};
-  background-size: cover;
-  min-height: 100vh;
-  width: 100%;
-  padding: 20px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-direction: column;
-  font-size: 48px;
-
-  & > *:not(:last-child) {
-    margin-bottom: 24px;
-  }
-
-  & > * {
-    text-align: center;
-  }
-`;
