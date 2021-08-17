@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { useContext, useState, useEffect } from "react";
+import { toast } from "react-toastify";
 import styled from "styled-components";
 
 import Page from "../../components/Page";
@@ -8,9 +9,38 @@ import Button from "../../components/Form/Button";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
+import { useEnroll } from "../../hooks/useApi/enrollment";
+
 export default function Enroll() {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confirmPassword, setConfirmPassword] = useState("");
+
+  const [, loadingEnroll, enrollError,, enroll] = useEnroll(email, password);
+  
   const { eventInfo } = useContext(EventInfoContext);
-  console.log(eventInfo);
+
+  useEffect(() => {
+    if (enrollError) {
+      if (enrollError.response) {
+        for (const detail of enrollError.response.data.details) {
+          toast(detail);
+        }
+      } else {
+        toast("Não foi possível conectar ao servidor!");
+      }
+    }
+  }, [enrollError]);
+
+  function submit(event) {
+    event.preventDefault();
+
+    if (password !== confirmPassword) {
+      toast("As senhas devem ser iguais!");
+    } else {
+      enroll();
+    }
+  }
 
   return (
     <Page background={eventInfo.backgroundImage}>
@@ -21,10 +51,12 @@ export default function Enroll() {
         </Column>
         <Column>
           <Label>Inscrição</Label>
-          <Input label="E-mail" type="text" fullWidth />
-          <Input label="Senha" type="password" fullWidth />
-          <Input label="Repita sua senha" type="password" fullWidth />
-          <Button color="primary" fullWidth>Inscrever</Button>
+          <form onSubmit={submit}>
+            <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
+            <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
+            <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+            <Button type="submit" color="primary" fullWidth disabled={loadingEnroll}>Inscrever</Button>
+          </form>
         </Column>
         <Column>
           &copy; Driven.t
