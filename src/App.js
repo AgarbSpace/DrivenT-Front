@@ -5,6 +5,7 @@ import {
 } from "react-router-dom";
 
 import Countdown from "./pages/Countdown";
+import Enroll from "./pages/Enroll";
 
 import { EventInfoProvider } from "./contexts/EventInfoContext";
 
@@ -15,6 +16,10 @@ export default function App() {
         <Switch>
           <Route path="/" exact>
             <Countdown />
+          </Route>
+
+          <Route path="/enroll" exact>
+            <Enroll />
           </Route>
         </Switch>
       </Router>
