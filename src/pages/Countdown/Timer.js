@@ -3,7 +3,7 @@ import dayjs from "dayjs";
 import useInterval from "react-useinterval";
 import styled from "styled-components";
 
-export default function Timer({ time }) {
+export default function Timer({ time, onZero = () => 0 }) {
   const [timeRemaining, setTimeRemaining] = useState(diffToDate(time));
 
   useInterval(() => {
@@ -24,7 +24,11 @@ export default function Timer({ time }) {
         hours = 23;
       }
 
-      setTimeRemaining({ days, hours, minutes, seconds });
+      if (!(days === 0 && hours === 0 && minutes === 0 && seconds === 0)) {
+        setTimeRemaining({ days, hours, minutes, seconds });
+      } else {
+        onZero();
+      }
     }
   }, 1000);
 
