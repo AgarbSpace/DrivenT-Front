@@ -1,6 +1,6 @@
 import { createContext } from "react";
 
-import Loading from "../components/Loading";
+import Splash from "../components/Splash";
 
 import { useGetEventInfo } from "../hooks/useApi/event";
 
@@ -12,7 +12,14 @@ export function EventInfoProvider({ children }) {
 
   if (loadingEventInfo) {
     return (
-      <Loading />
+      <Splash loading />
+    );
+  }
+
+  if (error) {
+    let message = error.response ? error.response.data.message : "Could not connect to server. Please try again later.";
+    return (
+      <Splash message={message} />
     );
   }
 
