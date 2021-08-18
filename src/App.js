@@ -12,23 +12,26 @@ import Countdown from "./pages/Countdown";
 import Enroll from "./pages/Enroll";
 
 import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
+import { UserProvider } from "./contexts/UserContext";
 
 export default function App() {
   return (
     <>
       <ToastContainer />
       <EventInfoProvider>
-        <Router>
-          <Switch>
-            <ConditionalRoute check={ensureCountdownOngoing} path="/" exact>
-              <Countdown />
-            </ConditionalRoute>
+        <UserProvider>
+          <Router>
+            <Switch>
+              <ConditionalRoute check={ensureCountdownOngoing} path="/" exact>
+                <Countdown />
+              </ConditionalRoute>
 
-            <ConditionalRoute check={ensureCountdownOver} path="/enroll" exact>
-              <Enroll />
-            </ConditionalRoute>
-          </Switch>
-        </Router>
+              <ConditionalRoute check={ensureCountdownOver} path="/enroll" exact>
+                <Enroll />
+              </ConditionalRoute>
+            </Switch>
+          </Router>
+        </UserProvider>
       </EventInfoProvider>
     </>
   );
