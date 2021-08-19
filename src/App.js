@@ -11,9 +11,10 @@ import ConditionalRoute from "./components/Router/ConditionalRoute";
 import Countdown from "./pages/Countdown";
 import Enroll from "./pages/Enroll";
 import SignIn from "./pages/SignIn";
+import Dashboard from "./pages/Dashboard";
 
 import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
-import { UserProvider } from "./contexts/UserContext";
+import UserContext, { UserProvider } from "./contexts/UserContext";
 
 export default function App() {
   return (
@@ -31,8 +32,12 @@ export default function App() {
                 <Enroll />
               </ConditionalRoute>
 
-              <ConditionalRoute check={ensureCountdownOver} paht="/sign-in" exact>
+              <ConditionalRoute check={ensureCountdownOver} path="/sign-in" exact>
                 <SignIn />
+              </ConditionalRoute>
+
+              <ConditionalRoute check={ensureAuthenticated} path="/dashboard">
+                <Dashboard />
               </ConditionalRoute>
             </Switch>
           </Router>
@@ -57,3 +62,11 @@ function ensureCountdownOver() {
     { to: "/", check: () => dayjs().isAfter(dayjs(eventInfo.startDate)), message: "As inscrições não foram liberadas ainda!" }
   ];
 } 
+
+function ensureAuthenticated() {
+  const { userData } = useContext(UserContext);
+
+  return [
+    { to: "/sign-in", check: () => !!userData.token, message: "Por favor, faça login!" }
+  ];
+}
