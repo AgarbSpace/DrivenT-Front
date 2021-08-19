@@ -49,16 +49,20 @@ export default function App() {
 
 function ensureCountdownOngoing() {
   const { eventInfo } = useContext(EventInfoContext);
+  const { userData } = useContext(UserContext);
 
   return [
+    { to: "/dashboard", check: () => !userData.token },
     { to: "/enroll", check: () => dayjs().isBefore(dayjs(eventInfo.startDate)) }
   ];
 }
 
 function ensureCountdownOver() {
   const { eventInfo } = useContext(EventInfoContext);
+  const { userData } = useContext(UserContext);
 
   return [
+    { to: "/dashboard", check: () => !userData.token },
     { to: "/", check: () => dayjs().isAfter(dayjs(eventInfo.startDate)), message: "As inscrições não foram liberadas ainda!" }
   ];
 } 
