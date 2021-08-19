@@ -1,12 +1,11 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import styled from "styled-components";
 import { useHistory } from "react-router-dom";
 
 import Page from "../../components/Page";
-import Container from "../../components/Container";
 import Input from "../../components/Form/Input";
 import Button from "../../components/Form/Button";
+import { StyledContainer, Column, Title, Label } from "../../components/Auth";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
@@ -71,29 +70,3 @@ export default function Enroll() {
     </Page>
   );
 }
-
-const StyledContainer = styled(Container)`
-  font-size: 16px;
-  flex-direction: column;
-  align-items: center;
-  justify-content: space-between;
-  padding: 30px;
-`;
-
-const Title = styled.h1`
-  font-size: 32px;
-  margin-top: 10px;
-`;
-
-const Label = styled.h1`
-  font-size: 24px;
-  margin-bottom: 10px
-`;
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: flex-start;
-  width: 100%;
-`;
