@@ -28,7 +28,7 @@ export default function SignIn() {
         <Title>{eventInfo.eventTitle}</Title>
       </Column>
       <Column>
-        <Label>Inscrição</Label>
+        <Label>Entrar</Label>
         <form onSubmit={submit}>
           <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
           <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
