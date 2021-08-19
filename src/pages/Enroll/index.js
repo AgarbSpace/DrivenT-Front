@@ -2,10 +2,12 @@ import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import { useHistory } from "react-router-dom";
 
-import Page from "../../components/Page";
+import AuthLayout from "../../layouts/Auth";
+
 import Input from "../../components/Form/Input";
 import Button from "../../components/Form/Button";
-import { StyledContainer, Column, Title, Label } from "../../components/Auth";
+import { Column, Title, Label } from "../../components/Auth";
+import Link from "../../components/Link";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
@@ -48,25 +50,23 @@ export default function Enroll() {
   }
 
   return (
-    <Page background={eventInfo.backgroundImage}>
-      <StyledContainer width="400px" height="520px">
-        <Column>
-          <img src={eventInfo.logoImage} alt="Event Logo" />
-          <Title>{eventInfo.eventTitle}</Title>
-        </Column>
-        <Column>
-          <Label>Inscrição</Label>
-          <form onSubmit={submit}>
-            <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
-            <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
-            <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-            <Button type="submit" color="primary" fullWidth disabled={loadingEnroll}>Inscrever</Button>
-          </form>
-        </Column>
-        <Column>
-          &copy; Driven.t
-        </Column>
-      </StyledContainer>
-    </Page>
+    <AuthLayout background={eventInfo.backgroundImage}>
+      <Column>
+        <img src={eventInfo.logoImage} alt="Event Logo" />
+        <Title>{eventInfo.eventTitle}</Title>
+      </Column>
+      <Column>
+        <Label>Inscrição</Label>
+        <form onSubmit={submit}>
+          <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
+          <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
+          <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
+          <Button type="submit" color="primary" fullWidth disabled={loadingEnroll}>Inscrever</Button>
+        </form>
+      </Column>
+      <Column>
+        <Link to="/sign-in">Já está inscrito? Faça login</Link>
+      </Column>
+    </AuthLayout>
   );
 }
