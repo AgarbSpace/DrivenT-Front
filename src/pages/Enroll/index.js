@@ -1,6 +1,7 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
+import { useHistory } from "react-router-dom";
 
 import Page from "../../components/Page";
 import Container from "../../components/Container";
@@ -17,6 +18,8 @@ export default function Enroll() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loadingEnroll, setLoadingEnroll] = useState(false);
 
+  const history = useHistory();
+
   const api = useApi();
   
   const { eventInfo } = useContext(EventInfoContext);
@@ -29,7 +32,8 @@ export default function Enroll() {
       toast("As senhas devem ser iguais!");
     } else {
       api.enrollment.enroll(email, password).then(response => {
-        // ... do something
+        toast("Inscrito com sucesso! Por favor, faça login.");
+        history.push("/sign-in");
       }).catch(error => {
         if (error.response) {
           for (const detail of error.response.data.details) {
