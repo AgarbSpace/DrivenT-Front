@@ -10,6 +10,7 @@ import ConditionalRoute from "./components/Router/ConditionalRoute";
 
 import Countdown from "./pages/Countdown";
 import Enroll from "./pages/Enroll";
+import SignIn from "./pages/SignIn";
 
 import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
 import { UserProvider } from "./contexts/UserContext";
@@ -28,6 +29,10 @@ export default function App() {
 
               <ConditionalRoute check={ensureCountdownOver} path="/enroll" exact>
                 <Enroll />
+              </ConditionalRoute>
+
+              <ConditionalRoute check={ensureCountdownOver} paht="/sign-in" exact>
+                <SignIn />
               </ConditionalRoute>
             </Switch>
           </Router>
