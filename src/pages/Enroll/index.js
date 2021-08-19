@@ -1,4 +1,4 @@
-import { useContext, useState, useEffect } from "react";
+import { useContext, useState } from "react";
 import { toast } from "react-toastify";
 import styled from "styled-components";
 
@@ -9,36 +9,38 @@ import Button from "../../components/Form/Button";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
-import { useEnroll } from "../../hooks/useApi/enrollment";
+import useApi from "../../hooks/useApi";
 
 export default function Enroll() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
+  const [loadingEnroll, setLoadingEnroll] = useState(false);
 
-  const [, loadingEnroll, enrollError,, enroll] = useEnroll(email, password);
+  const api = useApi();
   
   const { eventInfo } = useContext(EventInfoContext);
 
-  useEffect(() => {
-    if (enrollError) {
-      if (enrollError.response) {
-        for (const detail of enrollError.response.data.details) {
-          toast(detail);
-        }
-      } else {
-        toast("Não foi possível conectar ao servidor!");
-      }
-    }
-  }, [enrollError]);
-
   function submit(event) {
     event.preventDefault();
+    setLoadingEnroll(true);
 
     if (password !== confirmPassword) {
       toast("As senhas devem ser iguais!");
     } else {
-      enroll();
+      api.enrollment.enroll(email, password).then(response => {
+        // ... do something
+      }).catch(error => {
+        if (error.response) {
+          for (const detail of error.response.data.details) {
+            toast(detail);
+          }
+        } else {
+          toast("Não foi possível conectar ao servidor!");
+        }
+      }).then(() => {
+        setLoadingEnroll(false);
+      });
     }
   }
 

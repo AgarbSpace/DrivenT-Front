@@ -1,16 +1,27 @@
-import { createContext } from "react";
+import { useState, useEffect, createContext } from "react";
 
 import Splash from "../components/Splash";
 
-import { useGetEventInfo } from "../hooks/useApi/event";
+import useApi from "../hooks/useApi";
 
 const EventInfoContext = createContext();
 export default EventInfoContext;
 
 export function EventInfoProvider({ children }) {
-  const [eventInfo, loadingEventInfo, error,, refresh] = useGetEventInfo();
+  const [eventInfo, setEventInfo] = useState(null);
+  const [error, setError] = useState(null);
+  const api = useApi();
 
-  if (loadingEventInfo) {
+  useEffect(() => {
+    api.event.getEventInfo().then(response => {
+      setEventInfo(response.data);
+    }).catch(error => {
+      console.error(error);
+      setError(error);
+    });
+  }, []);
+
+  if (!eventInfo && !error) {
     return (
       <Splash loading />
     );
@@ -24,7 +35,7 @@ export function EventInfoProvider({ children }) {
   }
 
   return (
-    <EventInfoContext.Provider value={{ eventInfo, loadingEventInfo, eventInfoError: error, refreshEventInfo: refresh }}>
+    <EventInfoContext.Provider value={{ eventInfo, eventInfoError: error }}>
       { children }
     </EventInfoContext.Provider>
   );
