@@ -1,4 +1,5 @@
 import { useState, useContext } from "react";
+import { toast } from "react-toastify";
 
 import AuthLayout from "../../layouts/Auth";
 
@@ -8,17 +9,39 @@ import Link from "../../components/Link";
 import { Column, Title, Label } from "../../components/Auth";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
+import UserContext from "../../contexts/UserContext";
+
+import useApi from "../../hooks/useApi";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loadingSignIn, setLoadingSignIn] = useState(false);
 
+  const api = useApi();
+
   const { eventInfo } = useContext(EventInfoContext);
+  const { setUserData } = useContext(UserContext);
   
   function submit(event) {
     event.preventDefault();
     setLoadingSignIn(true);
+
+    api.auth.signIn(email, password).then(response => {
+      setUserData(response.data);
+    }).catch(error => {
+      console.error(error);
+      
+      if (error.response) {
+        for (const detail of error.response.data.details) {
+          toast(detail);
+        }
+      } else {
+        toast("Não foi possível conectar ao servidor!");
+      }
+    }).then(() => {
+      setLoadingSignIn(false);
+    });
   } 
 
   return (
