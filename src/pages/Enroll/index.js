@@ -6,7 +6,7 @@ import AuthLayout from "../../layouts/Auth";
 
 import Input from "../../components/Form/Input";
 import Button from "../../components/Form/Button";
-import { Column, Title, Label } from "../../components/Auth";
+import { Row, Title, Label } from "../../components/Auth";
 import Link from "../../components/Link";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
@@ -51,11 +51,11 @@ export default function Enroll() {
 
   return (
     <AuthLayout background={eventInfo.backgroundImage}>
-      <Column>
+      <Row>
         <img src={eventInfo.logoImage} alt="Event Logo" />
         <Title>{eventInfo.eventTitle}</Title>
-      </Column>
-      <Column>
+      </Row>
+      <Row>
         <Label>Inscrição</Label>
         <form onSubmit={submit}>
           <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
@@ -63,10 +63,10 @@ export default function Enroll() {
           <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
           <Button type="submit" color="primary" fullWidth disabled={loadingEnroll}>Inscrever</Button>
         </form>
-      </Column>
-      <Column>
+      </Row>
+      <Row>
         <Link to="/sign-in">Já está inscrito? Faça login</Link>
-      </Column>
+      </Row>
     </AuthLayout>
   );
 }
