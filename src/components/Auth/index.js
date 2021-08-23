@@ -20,7 +20,7 @@ export const Label = styled.h1`
   margin-bottom: 10px;
 `;
 
-export const Column = styled.div`
+export const Row = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
