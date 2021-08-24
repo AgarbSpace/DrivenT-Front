@@ -11,15 +11,15 @@ function CreditCardForm({
     <div>
         <h2>Informações do cartão</h2>
         <PaymentInfosForm>
-            <Input name='cardNumber' value={paymentFormData.cardNumber} onChange={handleInputValue} type="text" fullWidth label='Número do cartão'/>
-            <Input name='name' value={paymentFormData.name} onChange={handleInputValue} type="text" fullWidth label='Nome completo'/>
-            <Input name='cpf' value={paymentFormData.cpf} onChange={handleInputValue} type="text" fullWidth label='CPF do titular'/>
+            <Input name='cardNumber' value={paymentFormData.cardNumber} onChange={(e) => handleInputValue('cardNumber')(e)} type="text" fullWidth label='Número do cartão'/>
+            <Input name='name' value={paymentFormData.name} onChange={(e) => handleInputValue('name')(e)} type="text" fullWidth label='Nome completo'/>
+            <Input name='cpf' value={paymentFormData.cpf} onChange={(e) => handleInputValue('cpf')(e)} type="text" fullWidth label='CPF do titular'/>
            
             <FormRow>
-                <Input name='securityCode' type='number' value={paymentFormData.securityCode} onChange={handleInputValue} label='Código de segurança'/>
-                <Input name='expirationDate' value={paymentFormData.expirationDate} onChange={handleInputValue} type="text" label='Data de vencimento'/>
+                <Input name='securityCode' type='number' value={paymentFormData.securityCode} onChange={(e) => handleInputValue('securityCode')(e)} label='Código de segurança'/>
+                <Input name='expirationDate' type='date' value={paymentFormData.expirationDate} onChange={(e) => handleInputValue('expirationDate')(e)} label='Data de vencimento'/>
             </FormRow>
-            <Input name='plots' type='number' value={paymentFormData.securityCode} onChange={handleInputValue} label='Parcelas'/>
+            <Input name='plots' type='number' value={paymentFormData.plots} onChange={(e) => handleInputValue('plots')(e)} label='Parcelas'/>
         </PaymentInfosForm>
     </div>
   );

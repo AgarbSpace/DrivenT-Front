@@ -11,8 +11,8 @@ function PIXForm({
       <div>
         <h2>Dados de pagamento</h2>
         <PaymentInfosForm>
-            <Input name='name' value={paymentFormData.name} onChange={handleInputValue} type="text" fullWidth label='Nome completo'/>
-            <Input name='cpf' value={paymentFormData.cpf} onChange={handleInputValue} type="text" fullWidth label='CPF do titular'/>
+            <Input name='name' value={paymentFormData.name} onChange={(e) => handleInputValue('name')(e)} type="text" fullWidth label='Nome completo'/>
+            <Input name='cpf' value={paymentFormData.cpf} onChange={(e) => handleInputValue('cpf')(e)} type="text" fullWidth label='CPF'/>
         </PaymentInfosForm>
       </div>
   );
