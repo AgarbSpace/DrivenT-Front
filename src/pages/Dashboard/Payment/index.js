@@ -1,15 +1,15 @@
-import Button from '../../components/Form/Button'
+import Button from '../../../components/Form/Button'
 
-import { Container, ListPayments, ListPaymentItems } from '../../components/Payment'
+import { Container, ListPayments, ListPaymentItems } from '../../../components/Payment'
 import { useState  } from 'react';
 
-import InvoiceForm from '../../components/Payment/InvoiceForm'
-import PIXForm from '../../components/Payment/PIXForm'
-import CreditCardForm from '../../components/Payment/CreditCardForm'
+import InvoiceForm from '../../../components/Payment/InvoiceForm'
+import PIXForm from '../../../components/Payment/PIXForm'
+import CreditCardForm from '../../../components/Payment/CreditCardForm'
 
-import pixIcon from '../../assets/images/pix-icon.png'
-import creditCardIcon from '../../assets/images/credit-card-icon.png'
-import invoiceIcon from '../../assets/images/invoice-icon.png'
+import pixIcon from '../../../assets/images/pix-icon.png'
+import creditCardIcon from '../../../assets/images/credit-card-icon.png'
+import invoiceIcon from '../../../assets/images/invoice-icon.png'
 
 
 import { useRef } from 'react';

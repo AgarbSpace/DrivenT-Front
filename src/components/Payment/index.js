@@ -30,3 +30,12 @@ export const ListPaymentItems = styled.li`
         margin-right: 5px;
     }
 `
+export const FormRow = styled.div`
+  display: flex;
+  justify-content: space-between;
+`
+
+export const PaymentInfosForm = styled.div`
+  padding: 0 0.5rem;
+  margin: 0.6rem 0;
+`
