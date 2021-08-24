@@ -13,7 +13,16 @@ function CreditCardForm({
         <PaymentInfosForm>
             <Input name='cardNumber' value={paymentFormData.cardNumber} onChange={(e) => handleInputValue('cardNumber')(e)} type="text" fullWidth label='Número do cartão'/>
             <Input name='name' value={paymentFormData.name} onChange={(e) => handleInputValue('name')(e)} type="text" fullWidth label='Nome completo'/>
-            <Input name='cpf' value={paymentFormData.cpf} onChange={(e) => handleInputValue('cpf')(e)} type="text" fullWidth label='CPF do titular'/>
+            <Input 
+              name='cpf' 
+              value={paymentFormData.cpf} 
+              onChange={(e) => handleInputValue('cpf')(e)} 
+              type="text" 
+              fullWidth 
+              label='CPF do titular'
+              maxLength="14"
+              mask="999.999.999-99"
+            />
            
             <FormRow>
                 <Input name='securityCode' type='number' value={paymentFormData.securityCode} onChange={(e) => handleInputValue('securityCode')(e)} label='Código de segurança'/>
