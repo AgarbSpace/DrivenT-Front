@@ -6,7 +6,7 @@ import AuthLayout from "../../layouts/Auth";
 import Input from "../../components/Form/Input";
 import Button from "../../components/Form/Button"
 import Link from "../../components/Link";
-import { Column, Title, Label } from "../../components/Auth";
+import { Row, Title, Label } from "../../components/Auth";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 import UserContext from "../../contexts/UserContext";
@@ -46,21 +46,21 @@ export default function SignIn() {
 
   return (
     <AuthLayout background={eventInfo.backgroundImage}>
-      <Column>
+      <Row>
         <img src={eventInfo.logoImage} alt="Event Logo" />
         <Title>{eventInfo.eventTitle}</Title>
-      </Column>
-      <Column>
+      </Row>
+      <Row>
         <Label>Entrar</Label>
         <form onSubmit={submit}>
           <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
           <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
           <Button type="submit" color="primary" fullWidth disabled={loadingSignIn}>Entrar</Button>
         </form>
-      </Column>
-      <Column>
+      </Row>
+      <Row>
         <Link to="/enroll">Não possui login? Inscreva-se</Link>
-      </Column>
+      </Row>
     </AuthLayout>
   );
 }
