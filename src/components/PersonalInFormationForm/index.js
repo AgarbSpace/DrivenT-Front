@@ -1,9 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import styled from "styled-components";
 import Input from "../Form/Input";
 import Button from "../Form/Button";
 import DateFnsUtils from "@date-io/date-fns";
 import Typography from "@material-ui/core/Typography";
+import { toast } from "react-toastify";
 
 import { Checkbox } from "@material-ui/core";
 import {
@@ -12,6 +13,7 @@ import {
 } from "@material-ui/pickers";
 import useApi from "../../hooks/useApi";
 import { useForm } from "../../hooks/useForm";
+import UserContext from "../../contexts/UserContext";
 
 const CustomDatePicker = styled(KeyboardDatePicker)`
   margin-top: 8px !important;
@@ -71,6 +73,7 @@ export default function PersonalInformationForm() {
   }
   const [dinamicInputIsLoading, setDinamicInputIsLoading] = useState(false);
   const api = useApi();
+  const {userData} = useContext(UserContext);
 
   const {
     handleSubmit,
@@ -117,7 +120,38 @@ export default function PersonalInformationForm() {
         },
       },
     },
-    onSubmit: (data) => console.log(data),
+    onSubmit: (data) => {
+      const newData = {
+        "name": data.name ,
+        "cpf": data.cpf ,
+        "birthday": data.birthday ,
+        "address":  {
+            "cep": data.cep ,
+            "street": data.street  ,
+            "city": data.city ,
+            "number": data.number ,
+            "state": data.state ,
+            "neighborhood": data.neighborhood ,
+            "addressDetail": data.addressDetail 
+        },
+        "phone": data.phone , 
+        "isHotelGuest": data.isHotelGuest  
+      }
+
+      const request = api.attendeeApi.save(newData, userData.token);
+      request.then(data => {
+        toast("Salvo com sucesso!");
+      }).catch(error => {
+        if (error.response) {
+          for (const detail of error.response.data.details) {
+            toast(detail);
+          }
+        } else {
+          toast("Não foi possível conectar ao servidor!");
+        }
+      })
+    },
+
     initialValues: {
       // used to initialize the data
       cpf: "",
@@ -195,7 +229,6 @@ export default function PersonalInformationForm() {
               autoOk
               value={data.birthday || ""}
               onChange={(date) => {
-                console.log(date);
                 customHandleChange("birthday")(date);
               }}
             />

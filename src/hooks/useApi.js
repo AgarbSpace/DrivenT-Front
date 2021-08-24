@@ -2,6 +2,7 @@ import EventApi from "../services/event";
 import EnrollmentApi from "../services/enrollment";
 import AuthApi from "../services/auth";
 import CepApi from "../services/cepApi";
+import AttendeeApi from "../services/attendee";
 
 export default function useApi() {
   return {
@@ -9,5 +10,6 @@ export default function useApi() {
     enrollment: new EnrollmentApi(),
     auth: new AuthApi(),
     cepApi:new CepApi(),
+    attendeeApi: new AttendeeApi()
   };
 }
