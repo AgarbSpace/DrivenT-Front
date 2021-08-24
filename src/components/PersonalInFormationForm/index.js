@@ -1,10 +1,9 @@
 import { useState } from "react";
 import styled from "styled-components";
-import Input from "../../components/Form/Input";
-import Button from "../../components/Form/Button";
+import Input from "../Form/Input";
+import Button from "../Form/Button";
 import DateFnsUtils from "@date-io/date-fns";
 import Typography from "@material-ui/core/Typography";
-
 
 import { Checkbox } from "@material-ui/core";
 import {
@@ -88,7 +87,7 @@ export default function PersonalInformationForm() {
           message: "You're not allowed to have a number in your name",
         },
       },
-     
+
       cpf: {
         custom: {
           isValid: (value) =>
@@ -123,7 +122,7 @@ export default function PersonalInformationForm() {
       // used to initialize the data
       cpf: "",
       name: "",
-      birthday: null,
+      birthday: null ,
       phone: "",
       cep: "",
       street: "",
@@ -190,14 +189,15 @@ export default function PersonalInformationForm() {
               name="birthday"
               clearable
               placeholder="10/10/2018"
-              format="dd/mm/yyyy"
+              format="dd/MM/yyyy"
               label="Birthday"
               inputVariant="outlined"
               autoOk
               value={data.birthday || ""}
-              onChange={(date) =>
-                customHandleChange("birthday")(date)
-              }
+              onChange={(date) => {
+                console.log(date);
+                customHandleChange("birthday")(date);
+              }}
             />
             {errors.birthday && <ErrorMsg>{errors.birthday}</ErrorMsg>}
           </InputWrapper>

@@ -12,7 +12,7 @@ export default styled.div`
   box-shadow: 4px 4px 10px 5px rgba(0, 0, 0, .2);
 
   display: flex;
-  overflow: none;
+  overflow: hidden;
 
   @media (max-width: 600px) {
     border-radius: 0;
