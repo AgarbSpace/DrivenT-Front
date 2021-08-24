@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import Brand from "../assets/images/drivent.png";
 import Button from "../components/Form/Button";
 
-export default function Certificate({
+export default function DigitalCertificate({
   color,
   attendeeName,
   activities,
