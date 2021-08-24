@@ -7,8 +7,8 @@ import { saveAs } from "file-saver";
 
 import dayjs from "dayjs";
 
-import Brand from "../assets/images/drivent.png";
-import Button from "../components/Form/Button";
+import Brand from "../../../assets/images/drivent.png";
+import Button from "../../Form/Button";
 
 export default function DigitalCertificate({
   color,
