@@ -48,4 +48,10 @@ const Container = styled.div`
   width: 100px;
   flex-shrink: 0;
   justify-content: space-between;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    height: 80px;
+    flex-direction: row;
+  }
 `;

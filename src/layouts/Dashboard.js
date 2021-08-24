@@ -23,4 +23,8 @@ const StyledContainer = styled(Container)`
   & > * {
     text-align: initial;
   }
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+  }
 `;

@@ -33,4 +33,8 @@ const Button = styled.button`
     font-size: 28px;
     color: #124090;
   }
+
+  @media (max-width: 600px) {
+    height: 80px;
+  }
 `;
