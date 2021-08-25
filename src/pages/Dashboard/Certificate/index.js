@@ -1,29 +1,43 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import styled from "styled-components";
 
+import UserContext from "../../../contexts/UserContext";
+
 import DigitalCertificate from "../../../components/Dashboard/Certificate/DigitalCertificate";
+import useApi from "../../../hooks/useApi";
 
 export default function Certificate() {
   const [isAvailable, setIsAvailable] = useState(false);
+  const [certificateInfo, setCertificateInfo] = useState(null);
+
+  const { userData } = useContext(UserContext);
+
+  const api = useApi();
 
   useEffect(() => {
     const today = new Date();
     const endEventDate = new Date("2021-08-23");
 
     if (today > endEventDate) setIsAvailable(true);
-  });
+  }, []);
+
+  useEffect(() => {
+    api.certificate.get(userData.user.id).then(({ data }) => {
+      setCertificateInfo(data);
+    });
+  }, []);
 
   return (
     <CertificateContainer>
-      {isAvailable ? (
+      {certificateInfo && isAvailable ? (
         <DigitalCertificate
           color={"#f77dae"}
           attendeeName={"Gustavo Barbosa Santos"}
           activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
-          startEventDate={"2021-08-20T20:30:00.000Z"}
+          startEventDate={certificateInfo.startEventDate}
           endEventDate={"2021-08-25T20:30:00.000Z"}
           workload={10}
-          credentialNumber={"abcd-efgh-ijkl-mnop"}
+          credentialNumber={certificateInfo.credential}
         />
       ) : (
         <p>O certificado digital ainda não está disponível.</p>
