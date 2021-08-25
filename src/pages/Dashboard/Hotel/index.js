@@ -1,7 +1,10 @@
-import { useEffect, useState } from 'react';
-import Select from '../../../components/Form/Select'
+import { useState } from 'react';
 import Button from '../../../components/Form/Button'
-import Input from '../../../components/Form/Input'
+import styled from "styled-components";
+import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+
+import { HotelList, Container, HotelListItem } from '../../../components/Hotel'
+import { useRef } from 'react';
 
 const hotels = [
   {
@@ -25,46 +28,109 @@ const hotels = [
     address: '',  
     image: 'http://s2.glbimg.com/RoHVrdIQ8gU7WT3AzNepGyJpxL8=/620x455/e.glbimg.com/og/ed/f/original/2017/06/22/hotel_palacio_tangara_exterior__8966.jpg'
   },
+  {
+    id: 3, 
+    name: 'Tangara 3 Delux Edition', 
+    rooms: 1,
+    address: '',  
+    image: 'http://s2.glbimg.com/RoHVrdIQ8gU7WT3AzNepGyJpxL8=/620x455/e.glbimg.com/og/ed/f/original/2017/06/22/hotel_palacio_tangara_exterior__8966.jpg'
+  },
 ]
 
-export default function Hotel() {
+const CarouselButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
 
-  const [formatedHotels, setFormatedHotels] = useState([])
-  const [selectedHotel, setSelectedHotel] = useState({})
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  z-index: 9999;
 
-  useEffect(() => {
-    handleHotels()
-  }, [])
+  border: none;
+  background-color: #FA4098;
   
-  const handleHotels = () => {
-    const formatedHotelsValues = hotels.map(hotel => ({ label: hotel.name, value: hotel.id }))
-    setFormatedHotels(formatedHotelsValues)
+  &:hover{
+    cursor: pointer;
+    background-color: #fb1783;
   }
 
-  const handleSelectHotelsValue = (e) => {
-    setSelectedHotel(e.target.value)
+  > svg{
+    color: #fff;
+  }
+`
+
+const ButtonRight = styled(CarouselButton)`
+  right: 0px;
+  transform: translate(50%, -50%);
+`
+
+const ButtonLeft = styled(CarouselButton)`
+  transform: translate(-50%, -50%);
+`
+
+export default function Hotel() {
+  const [selectedHotel, setSelectedHotel] = useState()
+
+  const carouselRef = useRef(null)
+
+  const handleRight = () => {
+    const carousel = carouselRef.current
+    if(carousel){
+      carousel.scrollLeft += carousel.offsetWidth
+    }
   }
 
+  const handleLeft = () => {
+    const carousel = carouselRef.current
+    if(carousel){
+      carousel.scrollLeft -= carousel.offsetWidth
+    }
+  }
+  
   return (
-    <div>
-      <h2>Hoteis disponíveis</h2>
+    <Container>
+      <h1>Hoteis disponíveis</h1>
 
-      <form>
-        <Select 
-          placeholder='Selecione um hotel'
-          fullWidth
-          variant="outlined"
-          options={formatedHotels}
-          onChange={handleSelectHotelsValue}
-        />
-
-        Quantidade de quartos disponíveis: 
-        <Input label="Quantos quartos você usuará?" type="number" fullWidth />
-
-        <Button type='submit' color='primary' fullWidth>
+      <div style={{ position: 'relative' }}>
+        <ButtonLeft onClick={handleLeft}>
+          <FaChevronLeft />
+        </ButtonLeft>
+        <HotelList ref={carouselRef}>  
+          {hotels.map(hotel => (
+            <HotelListItem
+              key={hotel.id}
+              selected={selectedHotel === hotel.id} 
+              onClick={() => setSelectedHotel(hotel.id)}
+            >
+              <h2>{hotel.name}</h2>
+              <img alt={hotel.name} src={hotel.image} />
+              <div>
+                <span>Endereço</span>
+                <p>Estrada dos Mirandas</p>
+              </div>
+            </HotelListItem>
+          ))}
+        </HotelList>
+        <ButtonRight onClick={handleRight}>
+          <FaChevronRight />
+        </ButtonRight>
+      </div>
+      
+      <div>
+        <h2>Quartos nesse hotel</h2>
+        <div>
+          Numero do Quarto
+          Foto
+          Capacity
+          Vagas
+        </div>
+      </div>
+        {/* <Button type='submit' color='primary' fullWidth>
           Próximo
-        </Button>
-      </form>
-    </div>
+        </Button> */}
+    </Container>
   );
 }
