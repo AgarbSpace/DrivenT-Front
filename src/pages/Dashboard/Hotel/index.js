@@ -1,52 +1,24 @@
 import React, { useState } from 'react';
 import Button from '../../../components/Form/Button'
-import styled from "styled-components";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import useApi from "../../../hooks/useApi";
 
-import { BedroomItem, HotelList, Container, HotelListItem, BedroomContainer, BedroomDetails } from '../../../components/Hotel'
+import { 
+  BedroomItem, 
+  HotelList, 
+  Container, 
+  HotelListItem, 
+  BedroomContainer, 
+  BedroomDetails, 
+  ButtonRight, 
+  ButtonLeft 
+} from '../../../components/Hotel'
 import { useRef } from 'react';
 import { useEffect } from 'react';
 
-const CarouselButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  position: absolute;
-  top: 50%;
-
-  width: 40px;
-  height: 40px;
-  border-radius: 20px;
-  z-index: 9999;
-
-  border: none;
-  background-color: #FA4098;
-  
-  &:hover{
-    cursor: pointer;
-    background-color: #fb1783;
-  }
-
-  > svg{
-    color: #fff;
-  }
-`
-
-const ButtonRight = styled(CarouselButton)`
-  right: 0px;
-  transform: translate(50%, -50%);
-`
-
-const ButtonLeft = styled(CarouselButton)`
-  transform: translate(-50%, -50%);
-`
-
 export default function Hotel() {
   const [selectedHotel, setSelectedHotel] = useState()
-  const [selectedBedroom, setSelectedBedroom] = useState({
-
-  })
+  const [selectedBedroom, setSelectedBedroom] = useState({})
 
   const [hotels, setHotels] = useState([])
   const [bedrooms, setBedrooms] = useState([])
@@ -86,6 +58,10 @@ export default function Hotel() {
     if(bedroom.vacancies !== 0){
       setSelectedBedroom(bedroom)
     }
+  }
+
+  const handleRentAccommodation = async () => {
+    const { data } = await api.hotel.rentAccommodation(selectedHotel, selectedBedroom.id)
   }
 
   return (
@@ -158,8 +134,8 @@ export default function Hotel() {
         </BedroomContainer>
       )}
       
-      <Button type='submit' color='primary' fullWidth>
-        Próximo
+      <Button onClick={handleRentAccommodation} type='button' color='primary' fullWidth>
+        Seguir com quarto e hotel selecionado
       </Button>
     </Container>
   );

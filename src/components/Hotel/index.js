@@ -63,27 +63,6 @@ export const BedroomContainer = styled.div`
             display: flex;
             flex-wrap: wrap;
             align-content: flex-start;
-
-            >li{
-                /* display: flex;
-                justify-content: center;
-                align-items: center;
-                border-radius: 5px;
-
-                width: 3rem;
-                height: 3rem;
-                margin: 0.2rem;
-                border: 1px solid;
-
-                ${props => props.selected ? 
-                    css`border-color: #FA4098;` : 
-                    css`border-color: rgba(0, 0, 0, 0.15);`
-                }
-                
-                &:hover{
-                    cursor: pointer;
-                } */
-            }
         }
     }
 `
@@ -128,4 +107,38 @@ export const BedroomDetails = styled.div`
             }
         }
     }
+`
+
+const CarouselButton = styled.button`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  top: 50%;
+
+  width: 40px;
+  height: 40px;
+  border-radius: 20px;
+  z-index: 9999;
+
+  border: none;
+  background-color: #FA4098;
+  
+  &:hover{
+    cursor: pointer;
+    background-color: #fb1783;
+  }
+
+  > svg{
+    color: #fff;
+  }
+`
+
+export const ButtonRight = styled(CarouselButton)`
+  right: 0px;
+  transform: translate(50%, -50%);
+`
+
+export const ButtonLeft = styled(CarouselButton)`
+  transform: translate(-50%, -50%);
 `

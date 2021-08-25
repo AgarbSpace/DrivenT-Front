@@ -8,4 +8,8 @@ export default class hotelsAPI {
   getHotelBedrooms( hotelID ){
     return api.get(`/hotels/${hotelID}/bedrooms`)
   }
+
+  rentAccommodation(hotelID, roomID) {
+    return api.get(`/rent/${hotelID}/${roomID}`)
+  }
 }
