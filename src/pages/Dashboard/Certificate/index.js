@@ -35,7 +35,7 @@ export default function Certificate() {
           attendeeName={"Gustavo Barbosa Santos"}
           activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
           startEventDate={certificateInfo.startEventDate}
-          endEventDate={"2021-08-25T20:30:00.000Z"}
+          endEventDate={certificateInfo.endEventDate}
           workload={10}
           credentialNumber={certificateInfo.credential}
         />
