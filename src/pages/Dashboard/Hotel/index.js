@@ -1,41 +1,12 @@
-import { useState } from 'react';
+import React, { useState } from 'react';
 import Button from '../../../components/Form/Button'
 import styled from "styled-components";
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import useApi from "../../../hooks/useApi";
 
-import { HotelList, Container, HotelListItem } from '../../../components/Hotel'
+import { BedroomItem, HotelList, Container, HotelListItem, BedroomContainer, BedroomDetails } from '../../../components/Hotel'
 import { useRef } from 'react';
-
-const hotels = [
-  {
-    id: 1, 
-    name: 'Tangara', 
-    address: '', 
-    rooms: 3,
-    image: 'http://s2.glbimg.com/RoHVrdIQ8gU7WT3AzNepGyJpxL8=/620x455/e.glbimg.com/og/ed/f/original/2017/06/22/hotel_palacio_tangara_exterior__8966.jpg'
-  },
-  {
-    id: 2, 
-    name: 'Tangara 2', 
-    rooms: 5,
-    address: '',  
-    image: 'http://s2.glbimg.com/RoHVrdIQ8gU7WT3AzNepGyJpxL8=/620x455/e.glbimg.com/og/ed/f/original/2017/06/22/hotel_palacio_tangara_exterior__8966.jpg'
-  },
-  {
-    id: 3, 
-    name: 'Tangara 3 Delux Edition', 
-    rooms: 1,
-    address: '',  
-    image: 'http://s2.glbimg.com/RoHVrdIQ8gU7WT3AzNepGyJpxL8=/620x455/e.glbimg.com/og/ed/f/original/2017/06/22/hotel_palacio_tangara_exterior__8966.jpg'
-  },
-  {
-    id: 3, 
-    name: 'Tangara 3 Delux Edition', 
-    rooms: 1,
-    address: '',  
-    image: 'http://s2.glbimg.com/RoHVrdIQ8gU7WT3AzNepGyJpxL8=/620x455/e.glbimg.com/og/ed/f/original/2017/06/22/hotel_palacio_tangara_exterior__8966.jpg'
-  },
-]
+import { useEffect } from 'react';
 
 const CarouselButton = styled.button`
   display: flex;
@@ -73,8 +44,29 @@ const ButtonLeft = styled(CarouselButton)`
 
 export default function Hotel() {
   const [selectedHotel, setSelectedHotel] = useState()
+  const [selectedBedroom, setSelectedBedroom] = useState({
 
+  })
+
+  const [hotels, setHotels] = useState([])
+  const [bedrooms, setBedrooms] = useState([])
+
+  const api = useApi()
   const carouselRef = useRef(null)
+
+  useEffect(() => {
+    api.hotel.getHotels().then(response => {
+      setHotels(response.data)
+    })
+  }, [])
+
+  useEffect(() => {
+    if(selectedHotel){
+      api.hotel.getHotelBedrooms(selectedHotel).then(response => {
+        setBedrooms(response.data)
+      })
+    }
+  }, [selectedHotel])
 
   const handleRight = () => {
     const carousel = carouselRef.current
@@ -90,6 +82,12 @@ export default function Hotel() {
     }
   }
   
+  const handleSelectBedroom = (bedroom) => {
+    if(bedroom.vacancies !== 0){
+      setSelectedBedroom(bedroom)
+    }
+  }
+
   return (
     <Container>
       <h1>Hoteis disponíveis</h1>
@@ -106,10 +104,14 @@ export default function Hotel() {
               onClick={() => setSelectedHotel(hotel.id)}
             >
               <h2>{hotel.name}</h2>
-              <img alt={hotel.name} src={hotel.image} />
+              <img alt={hotel.name} src={hotel.picture} />
               <div>
                 <span>Endereço</span>
-                <p>Estrada dos Mirandas</p>
+                <p>{hotel.address}</p>
+              </div>
+              <div>
+                <span>Quartos disponíveis</span>
+                <p>{hotel.availableRooms}</p>
               </div>
             </HotelListItem>
           ))}
@@ -119,18 +121,46 @@ export default function Hotel() {
         </ButtonRight>
       </div>
       
-      <div>
-        <h2>Quartos nesse hotel</h2>
-        <div>
-          Numero do Quarto
-          Foto
-          Capacity
-          Vagas
-        </div>
-      </div>
-        {/* <Button type='submit' color='primary' fullWidth>
-          Próximo
-        </Button> */}
+      {(bedrooms.length !== 0) && (
+        <BedroomContainer>
+          <h2>Quartos disponíveis nesse hotel</h2>
+          <div>
+            <ul>
+              {bedrooms.map(bedroom => (
+                <BedroomItem 
+                  selected={selectedBedroom.id === bedroom.id} 
+                  onClick={() => handleSelectBedroom(bedroom)}>
+                    {bedroom.number}
+                  </BedroomItem>
+              ))}
+            </ul>
+            
+            {selectedBedroom.id && (
+              <BedroomDetails>
+                <img src={selectedBedroom.picture} alt={`Imagem do quarto ${selectedBedroom.number}`} />
+                <div>
+                  <div>
+                    <span>Numero do Quarto</span>
+                    <p>{selectedBedroom.number}</p>
+                  </div>
+                  <div>
+                    <span>Capacidade</span>
+                    <p>{selectedBedroom.capacity}</p>
+                  </div>
+                  <div>
+                    <span>Vagas</span>
+                    <p>{selectedBedroom.vacancies}</p>
+                  </div>
+                </div>
+              </BedroomDetails>
+            )}
+          </div>
+        </BedroomContainer>
+      )}
+      
+      <Button type='submit' color='primary' fullWidth>
+        Próximo
+      </Button>
     </Container>
   );
 }
