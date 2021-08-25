@@ -1,21 +1,20 @@
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import styled from "styled-components";
 import Input from "../Form/Input";
 import Button from "../Form/Button";
 import DateFnsUtils from "@date-io/date-fns";
 import Typography from "@material-ui/core/Typography";
 import { toast } from "react-toastify";
-
+import dayjs from "dayjs";
+import CustomParseFormat from "dayjs/plugin/customParseFormat";
 import { Checkbox } from "@material-ui/core";
-import {
-  KeyboardDatePicker,
-  MuiPickersUtilsProvider,
-} from "@material-ui/pickers";
+import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+
 import useApi from "../../hooks/useApi";
 import { useForm } from "../../hooks/useForm";
 import UserContext from "../../contexts/UserContext";
 
-const CustomDatePicker = styled(KeyboardDatePicker)`
+const CustomDatePicker = styled(DatePicker)`
   margin-top: 8px !important;
   > div {
     margin-top: auto !important;
@@ -71,9 +70,44 @@ export default function PersonalInformationForm() {
       return true;
     }
   }
+
   const [dinamicInputIsLoading, setDinamicInputIsLoading] = useState(false);
+
   const api = useApi();
-  const {userData} = useContext(UserContext);
+  const { userData } = useContext(UserContext);
+
+  function isValidString(value) {
+    if (value == null || value.trim() === "") {
+      return false;
+    }
+    return true;
+  }
+
+  useEffect(() => {
+    api.attendeeApi
+      .getAttendeePersonalInformations(userData.token)
+      .then(({ data }) => {
+        if (data.length === 0 || data === undefined || data === null) {
+          return;
+        }
+        const { name, cpf, birthday, phone, isHotelGuest, address } = data;
+        console.log(data);
+        setData({
+          name,
+          cpf,
+          birthday,
+          phone,
+          isHotelGuest,
+          cep: address.cep,
+          street: address.street,
+          city: address.city,
+          state: address.state,
+          number: address.number,
+          neighborhood: address.neighborhood,
+          addressDetail: address.addressDetail,
+        });
+      });
+  }, []);
 
   const {
     handleSubmit,
@@ -93,70 +127,81 @@ export default function PersonalInformationForm() {
 
       cpf: {
         custom: {
-          isValid: (value) =>
-            parseInt(value?.length, 10) === 14 ||
-            value === undefined ||
-            value.length === 0,
+          isValid: (value) => parseInt(value?.length, 10) === 14,
           message: "invalid cpf, not numbers enough",
         },
       },
 
       phone: {
         custom: {
-          isValid: (value) =>
-            parseInt(value?.length, 10) === 14 ||
-            value === undefined ||
-            value.length === 0,
+          isValid: (value) => parseInt(value?.length, 10) === 14,
           message: "invalid phone, not numbers enough",
         },
       },
       cep: {
         custom: {
-          isValid: (value) =>
-            parseInt(value?.length, 10) === 9 ||
-            value === undefined ||
-            value.length === 0,
+          isValid: (value) => parseInt(value?.length, 10) === 9,
           message: "invalid cep, not numbers enough",
+        },
+      },
+      city: {
+        custom: {
+          isValid: (value) => isValidString(value),
+          message: "Data invalid",
+        },
+      },
+      neighborhood: {
+        custom: {
+          isValid: (value) => isValidString(value),
+          message: "Data invalid",
+        },
+      },
+      street: {
+        custom: {
+          isValid: (value) => isValidString(value),
+          message: "Data invalid",
+        },
+      },
+      addressDetail: {
+        custom: {
+          isValid: (value) => isValidString(value),
+          message: "Data invalid",
         },
       },
     },
     onSubmit: (data) => {
       const newData = {
-        "name": data.name ,
-        "cpf": data.cpf ,
-        "birthday": data.birthday ,
-        "address":  {
-            "cep": data.cep ,
-            "street": data.street  ,
-            "city": data.city ,
-            "number": data.number ,
-            "state": data.state ,
-            "neighborhood": data.neighborhood ,
-            "addressDetail": data.addressDetail 
+        name: data.name,
+        cpf: data.cpf,
+        birthday: data.birthday,
+        address: {
+          cep: data.cep,
+          street: data.street,
+          city: data.city,
+          number: data.number,
+          state: data.state,
+          neighborhood: data.neighborhood,
+          addressDetail: data.addressDetail,
         },
-        "phone": data.phone , 
-        "isHotelGuest": data.isHotelGuest  
-      }
+        phone: data.phone,
+        isHotelGuest: data.isHotelGuest,
+      };
 
       const request = api.attendeeApi.save(newData, userData.token);
-      request.then(data => {
-        toast("Salvo com sucesso!");
-      }).catch(error => {
-        if (error.response) {
-          for (const detail of error.response.data.details) {
-            toast(detail);
-          }
-        } else {
-          toast("Não foi possível conectar ao servidor!");
-        }
-      })
+      request
+        .then((data) => {
+          toast("Salvo com sucesso!");
+        })
+        .catch((error) => {
+          console.log(error);
+        });
     },
 
     initialValues: {
       // used to initialize the data
       cpf: "",
       name: "",
-      birthday: null ,
+      birthday: null,
       phone: "",
       cep: "",
       street: "",
@@ -164,10 +209,11 @@ export default function PersonalInformationForm() {
       number: "",
       state: "",
       neighborhood: "",
-      adressDetail: "",
+      addressDetail: "",
       isHotelGuest: false,
     },
   });
+
   const handleCepChanges = (e) => {
     const { name, value } = e.target;
 
@@ -221,15 +267,27 @@ export default function PersonalInformationForm() {
           <InputWrapper>
             <CustomDatePicker
               name="birthday"
-              clearable
+              error={false}
+              helperText={null}
               placeholder="10/10/2018"
-              format="dd/MM/yyyy"
+              format="dd-MM-yyyy"
               label="Birthday"
               inputVariant="outlined"
-              autoOk
-              value={data.birthday || ""}
+              clearable
+              value={
+                data.birthday !== null
+                  ? dayjs(data.birthday, "DD-MM-YYYY").toString()
+                  : null
+              }
               onChange={(date) => {
-                customHandleChange("birthday")(date);
+                dayjs.extend(CustomParseFormat);
+
+                customHandleChange("birthday", (d) => {
+                  if (d === null) {
+                    return null;
+                  }
+                  return dayjs(d).format("DD-MM-YYYY");
+                })(date);
               }}
             />
             {errors.birthday && <ErrorMsg>{errors.birthday}</ErrorMsg>}
@@ -259,11 +317,10 @@ export default function PersonalInformationForm() {
           </InputWrapper>
           <InputWrapper>
             <Input
-              label="Street"
-              name="street"
-              value={data.street || ""}
-              onChange={handleChange("street")}
-              disabled={dinamicInputIsLoading}
+              label="State"
+              name="state"
+              value={data.state || ""}
+              onChange={handleChange("state")}
             />
           </InputWrapper>
           <InputWrapper>
@@ -274,7 +331,19 @@ export default function PersonalInformationForm() {
               onChange={handleChange("city")}
               disabled={dinamicInputIsLoading}
             />
+            {errors.city && <ErrorMsg>{errors.city}</ErrorMsg>}
           </InputWrapper>
+          <InputWrapper>
+            <Input
+              label="Street"
+              name="street"
+              value={data.street || ""}
+              onChange={handleChange("street")}
+              disabled={dinamicInputIsLoading}
+            />
+            {errors.street && <ErrorMsg>{errors.street}</ErrorMsg>}
+          </InputWrapper>
+
           <InputWrapper>
             <Input
               label="Number"
@@ -282,6 +351,7 @@ export default function PersonalInformationForm() {
               value={data.number || ""}
               onChange={handleChange("number")}
             />
+            {errors.number && <ErrorMsg>{errors.number}</ErrorMsg>}
           </InputWrapper>
           <InputWrapper>
             <Input
@@ -291,22 +361,27 @@ export default function PersonalInformationForm() {
               onChange={handleChange("neighborhood")}
               disabled={dinamicInputIsLoading}
             />
+            {errors.neighborhood && <ErrorMsg>{errors.neighborhood}</ErrorMsg>}
           </InputWrapper>
           <InputWrapper>
             <Input
-              label="AdressDetail"
-              name="adressDetail"
-              value={data.adressDetail || ""}
-              onChange={handleChange("adressDetail")}
+              label="AddressDetail"
+              name="addressDetail"
+              value={data.addressDetail || ""}
+              onChange={handleChange("addressDetail")}
             />
+            {errors.addressDetail && (
+              <ErrorMsg>{errors.addressDetail}</ErrorMsg>
+            )}
           </InputWrapper>
+
           <CustomSpan>
             <span>
               book hotel
               <Checkbox
                 name="isHotelGuest"
                 inputProps={{ "aria-label": "primary checkbox" }}
-                value={data.isHotelGuest || ""}
+                checked={data.isHotelGuest || false}
                 onChange={(e) =>
                   customHandleChange("isHotelGuest")(e.target.checked)
                 }
