@@ -1,8 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
+
+import { useHistory } from "react-router-dom";
 import Button from '../../../components/Form/Button'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import useApi from "../../../hooks/useApi";
-import styled from "styled-components";
 import { toast } from "react-toastify";
 
 import { 
@@ -13,50 +14,14 @@ import {
   BedroomContainer, 
   BedroomDetails, 
   ButtonRight, 
-  ButtonLeft 
+  ButtonLeft,
+  ContainerRoomShimmer,
+  LineShimmer,
+  ImageShimmer,
+  ContainerHotelShimmer
 } from '../../../components/Hotel'
-import { useRef } from 'react';
-import { useEffect } from 'react';
+
 import Shimmer from "react-shimmer-effect";
-
-
-const ContainerHotelShimmer = styled.div`
-    min-width: 15rem;
-    display: flex;
-    flex-direction: column;
-    margin: 0.4rem;
-
-    border: 0px solid rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, .1);
-    border-radius: 4px;
-    background-color: white;
-    display: flex;
-    padding: 16px;
-    height: 15rem;
-`
-
-const Image = styled.div`
-    height: 100px;
-    width: 100%;
-    border-radius: 5px;
-    margin-bottom: 1.2rem;
-`
-const Line = styled.div `
-  width: 100%;
-  height: 20px;
-  align-self: center;
-  border-radius: 8px;
-`
-
-const ContainerRoomShimmer = styled.li`
-    width: 3rem;
-    height: 3rem;
-    margin: 0.2rem;
-    border: 0px solid rgba(255, 255, 255, 1);
-    box-shadow: 0px 0px 10px rgba(0, 0, 0, .1);
-    border-radius: 4px;
-    background-color: white;
-`
 
 export default function Hotel() {
   const [selectedHotel, setSelectedHotel] = useState()
@@ -69,13 +34,13 @@ export default function Hotel() {
   const [isLoadingBedrooms, setIsLoadingBedrooms] = useState(false)
 
   const [isLoadingRendBedboom, setIsLoadingRendBedboom] = useState(false)
-
+  
+  const history = useHistory();
   const api = useApi()
   const carouselRef = useRef(null)
 
   useEffect(() => {
     setIsHotelLoading(true)
-    
       api.hotel.getHotels()
         .then(response => {
           setHotels(response.data)
@@ -89,6 +54,7 @@ export default function Hotel() {
   useEffect(() => {
     if(selectedHotel){
       setIsLoadingBedrooms(true)
+      
       api.hotel.getHotelBedrooms(selectedHotel).then(response => {
         setBedrooms(response.data)
       })
@@ -120,8 +86,9 @@ export default function Hotel() {
   const handleRentAccommodation = async () => {
     try{
       setIsLoadingRendBedboom(true)
-      await api.hotel.rentAccommodation(selectedHotel, selectedBedroom._id)
+      await api.hotel.rentAccommodation(selectedHotel, selectedBedroom.id)
       toast("Quarto reservado com sucesso!");
+      history.push("/activities");
     }catch(err){
       toast("Ops! Tivemos um erro ao reversar seu quarto");
     }finally{ 
@@ -141,8 +108,8 @@ export default function Hotel() {
           {isLoadingHotel ? Array.from({length: 4}, (_, index) =>(
             <ContainerHotelShimmer key={index}>
               <Shimmer>
-                <Image />
-                <Line />
+                <ImageShimmer />
+                <LineShimmer />
               </Shimmer>
             </ContainerHotelShimmer>
           )) : hotels.map(hotel => (
@@ -169,7 +136,7 @@ export default function Hotel() {
         </ButtonRight>
       </div>
       
-      {(bedrooms.length !== 0) && (
+      {(bedrooms.length !== 0 || isLoadingBedrooms) && (
         <BedroomContainer>
           <h2>Quartos disponíveis nesse hotel</h2>
           <div>
@@ -179,26 +146,26 @@ export default function Hotel() {
                 :
                 bedrooms.map(bedroom => (
                   <BedroomItem 
-                    selected={selectedBedroom._id === bedroom._id} 
+                    selected={selectedBedroom.id === bedroom.id} 
                     onClick={() => handleSelectBedroom(bedroom)}>
-                      {bedroom._number}
+                      {bedroom.number}
                     </BedroomItem>
                 ))
               }
             </ul>
             
-            {selectedBedroom._id && (
+            {selectedBedroom.id && (
               <BedroomDetails>
                 <img src={selectedBedroom.picture} alt={`Imagem do quarto ${selectedBedroom.number}`} />
                 <div>
                   <div>
                     <div>
                       <span>Numero do Quarto</span>
-                      <p>{selectedBedroom._number}</p>
+                      <p>{selectedBedroom.number}</p>
                     </div>
                     <div>
                       <span>Capacidade</span>
-                      <p>{selectedBedroom._capacity}</p>
+                      <p>{selectedBedroom.capacity}</p>
                     </div>
                     <div>
                       <span>Vagas</span>

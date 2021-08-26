@@ -17,12 +17,15 @@ export const HotelList = styled.ul`
     scroll-behavior: smooth;
 
     position: relative;
+
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 5px;
 `
 
 
 export const HotelListItem = styled.li`
     scroll-snap-align: center;
-
+    background: #fff;
 
     min-width: 15rem;
     width: 15rem;
@@ -162,4 +165,42 @@ export const ButtonRight = styled(CarouselButton)`
 
 export const ButtonLeft = styled(CarouselButton)`
   transform: translate(-50%, -50%);
+`
+
+export const ContainerHotelShimmer = styled.div`
+    min-width: 15rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0.4rem;
+
+    border: 0px solid rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, .1);
+    border-radius: 4px;
+    background-color: white;
+    display: flex;
+    padding: 16px;
+    height: 15rem;
+`
+
+export const ImageShimmer = styled.div`
+    height: 100px;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 1.2rem;
+`
+export const LineShimmer = styled.div `
+  width: 100%;
+  height: 20px;
+  align-self: center;
+  border-radius: 8px;
+`
+
+export const ContainerRoomShimmer = styled.li`
+    width: 3rem;
+    height: 3rem;
+    margin: 0.2rem;
+    border: 0px solid rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, .1);
+    border-radius: 4px;
+    background-color: white;
 `
