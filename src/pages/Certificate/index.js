@@ -1,6 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router";
 
+import { toast } from "react-toastify";
+
 import useApi from "../../hooks/useApi";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
@@ -17,14 +19,21 @@ export default function Certificate() {
   const api = useApi();
 
   useEffect(() => {
-    api.certificate.getByCredential(credential).then(({ data }) => {
-      setCertificateInfo(data);
-    });
+    api.certificate
+      .getByCredential(credential)
+      .then(({ data }) => {
+        setCertificateInfo(data);
+      })
+      .catch((err) => {
+        if (err.response) {
+          toast(err.response.data.message);
+        }
+      });
   }, []);
 
   return (
     <Page background={eventInfo.backgroundImage}>
-      {certificateInfo && (
+      {certificateInfo ? (
         <DigitalCertificate
           color={"#f77dae"}
           attendeeName={"Gustavo Barbosa Santos"}
@@ -34,6 +43,8 @@ export default function Certificate() {
           workload={10}
           credentialNumber={certificateInfo.credential}
         />
+      ) : (
+        <p>Certificado inválido.</p>
       )}
     </Page>
   );

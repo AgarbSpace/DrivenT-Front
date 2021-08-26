@@ -1,10 +1,12 @@
 import { useContext, useEffect, useState } from "react";
+import dayjs from "dayjs";
 import styled from "styled-components";
+
+import useApi from "../../../hooks/useApi";
 
 import UserContext from "../../../contexts/UserContext";
 
 import DigitalCertificate from "../../../components/Dashboard/Certificate/DigitalCertificate";
-import useApi from "../../../hooks/useApi";
 
 export default function Certificate() {
   const [isAvailable, setIsAvailable] = useState(false);
@@ -15,15 +17,13 @@ export default function Certificate() {
   const api = useApi();
 
   useEffect(() => {
-    const today = new Date();
-    const endEventDate = new Date("2021-08-23");
-
-    if (today > endEventDate) setIsAvailable(true);
-  }, []);
-
-  useEffect(() => {
     api.certificate.get(userData.user.id).then(({ data }) => {
       setCertificateInfo(data);
+
+      const today = dayjs();
+      const endEventDate = data.endEventDate;
+
+      if (today.isAfter(endEventDate)) setIsAvailable(true);
     });
   }, []);
 
