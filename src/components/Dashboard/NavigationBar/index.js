@@ -1,3 +1,5 @@
+import { Link, useRouteMatch } from "react-router-dom";
+
 import styled from "styled-components";
 
 import {
@@ -5,38 +7,50 @@ import {
   FaMoneyBill,
   FaBed,
   FaCalendarWeek,
-  FaCertificate
+  FaCertificate,
 } from "react-icons/fa";
 
 import NavigationButton from "./NavigationButton";
 
 export default function NavigationBar() {
+  const match = useRouteMatch();
+
   return (
     <Container>
-      <NavigationButton>
-        <FaFileContract />
-        <span>Inscrição</span>
-      </NavigationButton>
+      <Link to={`${match.path}/subscription`}>
+        <NavigationButton>
+          <FaFileContract />
+          <span>Inscrição</span>
+        </NavigationButton>
+      </Link>
 
-      <NavigationButton>
-        <FaMoneyBill />
-        <span>Pagamento</span>
-      </NavigationButton>
+      <Link to={`${match.path}/payment`}>
+        <NavigationButton>
+          <FaMoneyBill />
+          <span>Pagamento</span>
+        </NavigationButton>
+      </Link>
 
-      <NavigationButton>
-        <FaBed />
-        <span>Hotel</span>
-      </NavigationButton>
-      
-      <NavigationButton>
-        <FaCalendarWeek />
-        <span>Atividades</span>
-      </NavigationButton>
+      <Link to={`${match.path}/hotel`}>
+        <NavigationButton>
+          <FaBed />
+          <span>Hotel</span>
+        </NavigationButton>
+      </Link>
 
-      <NavigationButton>
-        <FaCertificate />
-        <span>Certificado</span>
-      </NavigationButton>
+      <Link to={`${match.path}/activity`}>
+        <NavigationButton>
+          <FaCalendarWeek />
+          <span>Atividades</span>
+        </NavigationButton>
+      </Link>
+
+      <Link to={`${match.path}/certificate`}>
+        <NavigationButton>
+          <FaCertificate />
+          <span>Certificado</span>
+        </NavigationButton>
+      </Link>
     </Container>
   );
 }
@@ -44,10 +58,14 @@ export default function NavigationBar() {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #A7A7A7;
+  background-color: #a7a7a7;
   width: 100px;
   flex-shrink: 0;
   justify-content: space-between;
+
+  > a {
+    text-decoration: none;
+  }
 
   @media (max-width: 600px) {
     width: 100%;
