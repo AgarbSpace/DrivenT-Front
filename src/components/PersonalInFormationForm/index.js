@@ -120,7 +120,7 @@ export default function PersonalInformationForm() {
     api.attendeeApi
       .getAttendeePersonalInformations(userData.token)
       .then(({ data }) => {
-        if (data.length === 0 || data === undefined || data === null) {
+        if (data.length === 0 || data === undefined || data === null || !data.address) {
           return;
         }
         const { name, cpf, birthday, phone, isHotelGuest, address } = data;
