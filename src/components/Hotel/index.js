@@ -4,6 +4,10 @@ export const Container = styled.div`
     >h1{
         margin-bottom: 1.5rem;
     }
+
+    >div:nth-child(2) {
+       position: relative;
+    }
 `
 
 export const HotelList = styled.ul`
@@ -39,6 +43,8 @@ export const HotelListItem = styled.li`
     margin: 0.2rem;
 
     >div{
+        margin-bottom: 0.5rem;
+
         >span{
             font-size: 8pt;
         }
@@ -56,13 +62,13 @@ export const BedroomContainer = styled.div`
     }
 
     > div {
-        display: flex;
-
         > ul {
-            width: 40%;
+            width: 100%;
             display: flex;
             flex-wrap: wrap;
             align-content: flex-start;
+            
+            margin-bottom: 1.2rem;
         }
     }
 `
@@ -89,19 +95,34 @@ export const BedroomItem = styled.li`
 `
 
 export const BedroomDetails = styled.div`
-    padding: 0 2rem;
+    /* padding: 0 2rem; */
     display: flex;
+    flex-wrap: wrap;
 
     > img {
-        width: 55%;
+        @media(max-width: 800px){
+            width: 100%;
+        }
+
+        width: 50%;
         border-radius: 10px;
     }
 
     >div{
-        padding: 0 1.2rem;
-        > div{
+        @media(max-width: 800px){
+            width: 100%;
+        }
+
+        width: 50%;
+        padding: 1.2rem;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+
+        > div> div{
             margin-bottom: 1rem;
-    
+        
             >span{
                 font-size: 10pt;
             }

@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import Button from '../../../components/Form/Button'
 import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
 import useApi from "../../../hooks/useApi";
+import styled from "styled-components";
+import { toast } from "react-toastify";
 
 import { 
   BedroomItem, 
@@ -15,28 +17,83 @@ import {
 } from '../../../components/Hotel'
 import { useRef } from 'react';
 import { useEffect } from 'react';
+import Shimmer from "react-shimmer-effect";
+
+
+const ContainerHotelShimmer = styled.div`
+    min-width: 15rem;
+    display: flex;
+    flex-direction: column;
+    margin: 0.4rem;
+
+    border: 0px solid rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, .1);
+    border-radius: 4px;
+    background-color: white;
+    display: flex;
+    padding: 16px;
+    height: 15rem;
+`
+
+const Image = styled.div`
+    height: 100px;
+    width: 100%;
+    border-radius: 5px;
+    margin-bottom: 1.2rem;
+`
+const Line = styled.div `
+  width: 100%;
+  height: 20px;
+  align-self: center;
+  border-radius: 8px;
+`
+
+const ContainerRoomShimmer = styled.li`
+    width: 3rem;
+    height: 3rem;
+    margin: 0.2rem;
+    border: 0px solid rgba(255, 255, 255, 1);
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, .1);
+    border-radius: 4px;
+    background-color: white;
+`
 
 export default function Hotel() {
   const [selectedHotel, setSelectedHotel] = useState()
   const [selectedBedroom, setSelectedBedroom] = useState({})
 
   const [hotels, setHotels] = useState([])
+  const [isLoadingHotel, setIsHotelLoading] = useState(false)
+
   const [bedrooms, setBedrooms] = useState([])
+  const [isLoadingBedrooms, setIsLoadingBedrooms] = useState(false)
+
+  const [isLoadingRendBedboom, setIsLoadingRendBedboom] = useState(false)
 
   const api = useApi()
   const carouselRef = useRef(null)
 
   useEffect(() => {
-    api.hotel.getHotels().then(response => {
-      setHotels(response.data)
-    })
+    setIsHotelLoading(true)
+    
+      api.hotel.getHotels()
+        .then(response => {
+          setHotels(response.data)
+        })
+        .catch(err => {
+          toast("Tivemos um erro ao carregar os hoteis");
+        })
+        .finally(() => setIsHotelLoading(false))
   }, [])
 
   useEffect(() => {
     if(selectedHotel){
+      setIsLoadingBedrooms(true)
       api.hotel.getHotelBedrooms(selectedHotel).then(response => {
         setBedrooms(response.data)
       })
+      .catch(() => toast("Tivemos um erro ao carregar os quartos desse hotel"))
+      .finally(() => setIsLoadingBedrooms(false))
     }
   }, [selectedHotel])
 
@@ -61,19 +118,34 @@ export default function Hotel() {
   }
 
   const handleRentAccommodation = async () => {
-    const { data } = await api.hotel.rentAccommodation(selectedHotel, selectedBedroom.id)
+    try{
+      setIsLoadingRendBedboom(true)
+      await api.hotel.rentAccommodation(selectedHotel, selectedBedroom._id)
+      toast("Quarto reservado com sucesso!");
+    }catch(err){
+      toast("Ops! Tivemos um erro ao reversar seu quarto");
+    }finally{ 
+      setIsLoadingRendBedboom(false)
+    }
   }
 
   return (
     <Container>
       <h1>Hoteis disponíveis</h1>
 
-      <div style={{ position: 'relative' }}>
+      <div>
         <ButtonLeft onClick={handleLeft}>
           <FaChevronLeft />
         </ButtonLeft>
-        <HotelList ref={carouselRef}>  
-          {hotels.map(hotel => (
+        <HotelList ref={carouselRef}> 
+          {isLoadingHotel ? Array.from({length: 4}, (_, index) =>(
+            <ContainerHotelShimmer key={index}>
+              <Shimmer>
+                <Image />
+                <Line />
+              </Shimmer>
+            </ContainerHotelShimmer>
+          )) : hotels.map(hotel => (
             <HotelListItem
               key={hotel.id}
               selected={selectedHotel === hotel.id} 
@@ -102,41 +174,46 @@ export default function Hotel() {
           <h2>Quartos disponíveis nesse hotel</h2>
           <div>
             <ul>
-              {bedrooms.map(bedroom => (
-                <BedroomItem 
-                  selected={selectedBedroom.id === bedroom.id} 
-                  onClick={() => handleSelectBedroom(bedroom)}>
-                    {bedroom.number}
-                  </BedroomItem>
-              ))}
+              {isLoadingBedrooms ? 
+                  Array.from({ length: 5 }, (_, index) => <ContainerRoomShimmer key={index}/>)
+                :
+                bedrooms.map(bedroom => (
+                  <BedroomItem 
+                    selected={selectedBedroom._id === bedroom._id} 
+                    onClick={() => handleSelectBedroom(bedroom)}>
+                      {bedroom._number}
+                    </BedroomItem>
+                ))
+              }
             </ul>
             
-            {selectedBedroom.id && (
+            {selectedBedroom._id && (
               <BedroomDetails>
                 <img src={selectedBedroom.picture} alt={`Imagem do quarto ${selectedBedroom.number}`} />
                 <div>
                   <div>
-                    <span>Numero do Quarto</span>
-                    <p>{selectedBedroom.number}</p>
+                    <div>
+                      <span>Numero do Quarto</span>
+                      <p>{selectedBedroom._number}</p>
+                    </div>
+                    <div>
+                      <span>Capacidade</span>
+                      <p>{selectedBedroom._capacity}</p>
+                    </div>
+                    <div>
+                      <span>Vagas</span>
+                      <p>{selectedBedroom.vacancies}</p>
+                    </div>
                   </div>
-                  <div>
-                    <span>Capacidade</span>
-                    <p>{selectedBedroom.capacity}</p>
-                  </div>
-                  <div>
-                    <span>Vagas</span>
-                    <p>{selectedBedroom.vacancies}</p>
-                  </div>
+                  <Button onClick={handleRentAccommodation} type='button' color='primary' fullWidth>
+                    Reservar Hotel e Quarto
+                  </Button>
                 </div>
               </BedroomDetails>
             )}
           </div>
         </BedroomContainer>
       )}
-      
-      <Button onClick={handleRentAccommodation} type='button' color='primary' fullWidth>
-        Seguir com quarto e hotel selecionado
-      </Button>
     </Container>
   );
 }

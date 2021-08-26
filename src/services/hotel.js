@@ -10,6 +10,9 @@ export default class hotelsAPI {
   }
 
   rentAccommodation(hotelID, roomID) {
-    return api.get(`/rent/${hotelID}/${roomID}`)
+    const { token } = JSON.parse(localStorage.getItem('userData'))
+    api.defaults.headers.authorization = `Bearer ${token}`;
+    
+    return api.post(`/hotels/rent/${hotelID}/${roomID}`)
   }
 }
