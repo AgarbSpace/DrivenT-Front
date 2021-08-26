@@ -1,4 +1,4 @@
-import { Link, useRouteMatch } from "react-router-dom";
+import { Link, useLocation, useRouteMatch } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -13,40 +13,45 @@ import {
 import NavigationButton from "./NavigationButton";
 
 export default function NavigationBar() {
+  const location = useLocation();
   const match = useRouteMatch();
+
+  function isActive(buttonPath) {
+    return location.pathname === buttonPath;
+  }
 
   return (
     <Container>
       <Link to={`${match.path}/subscription`}>
-        <NavigationButton>
+        <NavigationButton active={isActive(`${match.path}/subscription`)}>
           <FaFileContract />
           <span>Inscrição</span>
         </NavigationButton>
       </Link>
 
       <Link to={`${match.path}/payment`}>
-        <NavigationButton>
+        <NavigationButton active={isActive(`${match.path}/payment`)}>
           <FaMoneyBill />
           <span>Pagamento</span>
         </NavigationButton>
       </Link>
 
       <Link to={`${match.path}/hotel`}>
-        <NavigationButton>
+        <NavigationButton active={isActive(`${match.path}/hotel`)}>
           <FaBed />
           <span>Hotel</span>
         </NavigationButton>
       </Link>
 
-      <Link to={`${match.path}/activity`}>
-        <NavigationButton>
+      <Link to={`${match.path}/activities`}>
+        <NavigationButton active={isActive(`${match.path}/activities`)}>
           <FaCalendarWeek />
           <span>Atividades</span>
         </NavigationButton>
       </Link>
 
       <Link to={`${match.path}/certificate`}>
-        <NavigationButton>
+        <NavigationButton active={isActive(`${match.path}/certificate`)}>
           <FaCertificate />
           <span>Certificado</span>
         </NavigationButton>
