@@ -14,6 +14,8 @@ import useApi from "../../hooks/useApi";
 import { useForm } from "../../hooks/useForm";
 import UserContext from "../../contexts/UserContext";
 
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "../../components/Form/Select";
 const CustomDatePicker = styled(DatePicker)`
   margin-top: 8px !important;
   > div {
@@ -63,6 +65,35 @@ const ErrorMsg = styled.p`
 `;
 
 export default function PersonalInformationForm() {
+  const ufList = [
+    "AC",
+    "AL",
+    "AM",
+    "AP",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MG",
+    "MS",
+    "MT",
+    "PA",
+    "PB",
+    "PE",
+    "PI",
+    "PR",
+    "RJ",
+    "RN",
+    "RO",
+    "RR",
+    "RS",
+    "SC",
+    "SE",
+    "SP",
+    "TO",
+  ];
   function cepIsFully(cep) {
     if (cep.length < 8) {
       return false;
@@ -121,7 +152,7 @@ export default function PersonalInformationForm() {
       name: {
         custom: {
           isValid: (value) => isValidString(value),
-          message: "You're not allowed to have a number in your name",
+          message: "Invalid data",
         },
       },
 
@@ -147,25 +178,26 @@ export default function PersonalInformationForm() {
       city: {
         custom: {
           isValid: (value) => isValidString(value),
-          message: "Data invalid",
+          message: "Invalid data",
         },
       },
       neighborhood: {
         custom: {
           isValid: (value) => isValidString(value),
-          message: "invalid data ",
+          message: "Invalid data",
         },
       },
-      addressDetail: {
-        custom: {
-          isValid: (value) => isValidString(value),
-          message: "invalid data",
-        },
-      },
+
       street: {
         custom: {
           isValid: (value) => isValidString(value),
-          message: "invalid data",
+          message: "Invalid data",
+        },
+      },
+      state: {
+        custom: {
+          isValid: (value) => isValidString(value),
+          message: "Invalid data",
         },
       },
       birthday: {
@@ -332,13 +364,25 @@ export default function PersonalInformationForm() {
             {errors.cep && <ErrorMsg>{errors.cep}</ErrorMsg>}
           </InputWrapper>
           <InputWrapper>
-            <Input
+            <Select
               label="State"
               name="state"
+              id="state"
               value={data.state || ""}
               onChange={handleChange("state")}
-            />
+            >
+              <MenuItem value="">
+                <em>None</em>
+              </MenuItem>
+              {ufList.map((uf) => (
+                <MenuItem value={uf}>
+                  <em>{uf}</em>
+                </MenuItem>
+              ))}
+            </Select>
+            {errors.state && <ErrorMsg>{errors.state}</ErrorMsg>}
           </InputWrapper>
+
           <InputWrapper>
             <Input
               label="City"
@@ -386,7 +430,6 @@ export default function PersonalInformationForm() {
               value={data.addressDetail || ""}
               onChange={handleChange("addressDetail")}
             />
-            {errors.neighborhood && <ErrorMsg>{errors.neighborhood}</ErrorMsg>}
           </InputWrapper>
 
           <CustomSpan>
