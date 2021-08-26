@@ -119,8 +119,8 @@ export default function PersonalInformationForm() {
   } = useForm({
     validations: {
       name: {
-        pattern: {
-          value: "^[A-Za-z]*$",
+        custom: {
+          isValid: (value) => isValidString(value),
           message: "You're not allowed to have a number in your name",
         },
       },
@@ -153,19 +153,36 @@ export default function PersonalInformationForm() {
       neighborhood: {
         custom: {
           isValid: (value) => isValidString(value),
-          message: "Data invalid",
-        },
-      },
-      street: {
-        custom: {
-          isValid: (value) => isValidString(value),
-          message: "Data invalid",
+          message: "invalid data ",
         },
       },
       addressDetail: {
         custom: {
           isValid: (value) => isValidString(value),
-          message: "Data invalid",
+          message: "invalid data",
+        },
+      },
+      street: {
+        custom: {
+          isValid: (value) => isValidString(value),
+          message: "invalid data",
+        },
+      },
+      birthday: {
+        custom: {
+          isValid: (value) => isValidString(value),
+          message: "invalid data",
+        },
+      },
+      number: {
+        custom: {
+          isValid: (value) => {
+            if (Number(value)) {
+              return true;
+            }
+            return false;
+          },
+          message: "invalid data",
         },
       },
     },
@@ -246,7 +263,6 @@ export default function PersonalInformationForm() {
               label="Full Name"
               name="name"
               type="text"
-              mask=""
               value={data.name || ""}
               onChange={handleChange("name")}
             />
@@ -370,9 +386,7 @@ export default function PersonalInformationForm() {
               value={data.addressDetail || ""}
               onChange={handleChange("addressDetail")}
             />
-            {errors.addressDetail && (
-              <ErrorMsg>{errors.addressDetail}</ErrorMsg>
-            )}
+            {errors.neighborhood && <ErrorMsg>{errors.neighborhood}</ErrorMsg>}
           </InputWrapper>
 
           <CustomSpan>
