@@ -12,6 +12,7 @@ import Countdown from "./pages/Countdown";
 import Enroll from "./pages/Enroll";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
+import Certificate from "./pages/Certificate/";
 
 import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
 import UserContext, { UserProvider } from "./contexts/UserContext";
@@ -39,6 +40,10 @@ export default function App() {
               <ConditionalRoute check={ensureAuthenticated} path="/dashboard">
                 <Dashboard />
               </ConditionalRoute>
+              
+              <ConditionalRoute check={ensureEventIsFinished} path="/certificate/credential/:credential" exact>
+                <Certificate />
+              </ConditionalRoute>
             </Switch>
           </Router>
         </UserProvider>
@@ -65,12 +70,20 @@ function ensureCountdownOver() {
     { to: "/dashboard", check: () => !userData.token },
     { to: "/", check: () => dayjs().isAfter(dayjs(eventInfo.startDate)), message: "As inscrições não foram liberadas ainda!" }
   ];
-} 
+}
 
 function ensureAuthenticated() {
   const { userData } = useContext(UserContext);
 
   return [
     { to: "/sign-in", check: () => !!userData.token, message: "Por favor, faça login!" }
+  ];
+}
+
+function ensureEventIsFinished() {
+  const { eventInfo } = useContext(EventInfoContext);
+
+  return [
+    { to: "/", check: () => dayjs().isAfter(dayjs(eventInfo.endDate)), message: "Os certificados não foram liberados ainda!" }
   ];
 }
