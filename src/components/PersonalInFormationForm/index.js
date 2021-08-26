@@ -16,6 +16,8 @@ import UserContext from "../../contexts/UserContext";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "../../components/Form/Select";
+dayjs.extend(CustomParseFormat);
+
 const CustomDatePicker = styled(DatePicker)`
   margin-top: 8px !important;
   > div {
@@ -122,7 +124,7 @@ export default function PersonalInformationForm() {
           return;
         }
         const { name, cpf, birthday, phone, isHotelGuest, address } = data;
-        console.log(data);
+
         setData({
           name,
           cpf,
@@ -328,7 +330,6 @@ export default function PersonalInformationForm() {
                   : null
               }
               onChange={(date) => {
-                dayjs.extend(CustomParseFormat);
 
                 customHandleChange("birthday", (d) => {
                   if (d === null) {
