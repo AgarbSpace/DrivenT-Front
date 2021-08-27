@@ -17,13 +17,16 @@ export default function Certificate() {
   const api = useApi();
 
   useEffect(() => {
-    api.certificate.get(userData.user.id).then(({ data }) => {
-      setCertificateInfo(data);
-
+    api.event.getEventInfo().then(({ data }) => {
       const today = dayjs();
-      const endEventDate = data.endEventDate;
+      const endEventDate = data.endDate;
 
-      if (today.isAfter(endEventDate)) setIsAvailable(true);
+      if (today.isAfter(endEventDate)) {
+        api.certificate.findOrCreate(userData.user.id).then(({ data }) => {
+          setCertificateInfo(data);
+          setIsAvailable(true);
+        });
+      }
     });
   }, []);
 

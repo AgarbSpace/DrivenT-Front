@@ -20,7 +20,7 @@ export default function Certificate() {
 
   useEffect(() => {
     api.certificate
-      .getByCredential(credential)
+      .findByCredential(credential)
       .then(({ data }) => {
         setCertificateInfo(data);
       })
