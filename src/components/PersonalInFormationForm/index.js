@@ -1,5 +1,4 @@
 import { useContext, useState, useEffect } from "react";
-import styled from "styled-components";
 import Input from "../Form/Input";
 import Button from "../Form/Button";
 import DateFnsUtils from "@date-io/date-fns";
@@ -8,95 +7,25 @@ import { toast } from "react-toastify";
 import dayjs from "dayjs";
 import CustomParseFormat from "dayjs/plugin/customParseFormat";
 import { Checkbox } from "@material-ui/core";
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 
 import useApi from "../../hooks/useApi";
 import { useForm } from "../../hooks/useForm";
 import UserContext from "../../contexts/UserContext";
-import formatForm from "../../utils/personalFormFormater";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "../../components/Form/Select";
+import {FormWrapper} from "./FormWrapper";
+import {CustomDatePicker} from "./CustomDatePicker";
+import {InputWrapper} from "./InputWrapper";
+import {CustomSpan} from "./CustomSpan";
+import {ErrorMsg} from "./ErrorMsg";
+import {ufList} from "./ufList";
+
 dayjs.extend(CustomParseFormat);
 
-const CustomDatePicker = styled(DatePicker)`
-  margin-top: 8px !important;
-  > div {
-    margin-top: auto !important;
-  }
-  > label {
-    margin-top: auto !important;
-  }
-`;
-
-const FormWrapper = styled.form`
-  display: flex;
-  width: 100%;
-  flex-wrap: wrap;
-  > div {
-    width: 50%;
-  }
-
-  @media (max-width: 600px) {
-    > div {
-      width: 100%;
-      padding-left: 0px !important;
-    }
-  }
-`;
-const InputWrapper = styled.div`
-  > div {
-    width: 100%;
-  }
-`;
-const CustomSpan = styled.span`
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-top: 8px;
-  > button {
-    margin-top: 0 !important;
-  }
-
-  @media (max-width: 600px) {
-    justify-content: space-between;
-  }
-`;
-
-const ErrorMsg = styled.p`
-  color: red;
-`;
-
 export default function PersonalInformationForm() {
-  const ufList = [
-    "AC",
-    "AL",
-    "AM",
-    "AP",
-    "BA",
-    "CE",
-    "DF",
-    "ES",
-    "GO",
-    "MA",
-    "MG",
-    "MS",
-    "MT",
-    "PA",
-    "PB",
-    "PE",
-    "PI",
-    "PR",
-    "RJ",
-    "RN",
-    "RO",
-    "RR",
-    "RS",
-    "SC",
-    "SE",
-    "SP",
-    "TO",
-  ];
+
   function cepIsFully(cep) {
     if (cep.length < 8) {
       return false;
@@ -168,7 +97,7 @@ export default function PersonalInformationForm() {
 
       phone: {
         custom: {
-          isValid: (value) => parseInt(value?.length, 10) === 14,
+          isValid: (value) => parseInt(value?.length, 10) >= 13,
           message: "invalid phone, not numbers enough",
         },
       },
@@ -239,8 +168,7 @@ export default function PersonalInformationForm() {
         isHotelGuest: data.isHotelGuest,
       };
 
-      const formatData = formatForm(newData);
-      const request = api.attendeeApi.save(formatData, userData.token);
+      const request = api.attendeeApi.save(newData, userData.token);
       request
         .then((data) => {
           toast("Salvo com sucesso!");
