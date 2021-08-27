@@ -13,6 +13,7 @@ import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
 import useApi from "../../hooks/useApi";
 import { useForm } from "../../hooks/useForm";
 import UserContext from "../../contexts/UserContext";
+import formatForm from "../../utils/personalFormFormater";
 
 import MenuItem from "@material-ui/core/MenuItem";
 import Select from "../../components/Form/Select";
@@ -238,7 +239,8 @@ export default function PersonalInformationForm() {
         isHotelGuest: data.isHotelGuest,
       };
 
-      const request = api.attendeeApi.save(newData, userData.token);
+      const formatData = formatForm(newData);
+      const request = api.attendeeApi.save(formatData, userData.token);
       request
         .then((data) => {
           toast("Salvo com sucesso!");
