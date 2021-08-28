@@ -6,6 +6,8 @@ import useApi from "../../../hooks/useApi";
 
 import UserContext from "../../../contexts/UserContext";
 
+import Loader from "react-loader-spinner";
+
 import DigitalCertificate from "../../../components/Dashboard/Certificate/DigitalCertificate";
 
 export default function Certificate() {
@@ -17,30 +19,37 @@ export default function Certificate() {
   const api = useApi();
 
   useEffect(() => {
-    api.certificate.get(userData.user.id).then(({ data }) => {
-      setCertificateInfo(data);
-
+    api.event.getEventInfo().then(({ data }) => {
       const today = dayjs();
-      const endEventDate = data.endEventDate;
+      const endEventDate = data.endDate;
 
-      if (today.isAfter(endEventDate)) setIsAvailable(true);
+      if (today.isAfter(endEventDate)) {
+        api.certificate.findOrCreate(userData.user.id).then(({ data }) => {
+          setCertificateInfo(data);
+          setIsAvailable(true);
+        });
+      }
     });
   }, []);
 
   return (
     <CertificateContainer>
-      {certificateInfo && isAvailable ? (
-        <DigitalCertificate
-          color={"#f77dae"}
-          attendeeName={"Gustavo Barbosa Santos"}
-          activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
-          startEventDate={certificateInfo.startEventDate}
-          endEventDate={certificateInfo.endEventDate}
-          workload={10}
-          credentialNumber={certificateInfo.credential}
-        />
+      {isAvailable ? (
+        certificateInfo ? (
+          <DigitalCertificate
+            color={"#f77dae"}
+            attendeeName={"Gustavo Barbosa Santos"}
+            activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
+            startEventDate={certificateInfo.startEventDate}
+            endEventDate={certificateInfo.endEventDate}
+            workload={10}
+            credentialNumber={certificateInfo.credential}
+          />
+        ) : (
+          <p>O certificado digital ainda não está disponível.</p>
+        )
       ) : (
-        <p>O certificado digital ainda não está disponível.</p>
+        <Loader type={"TailSpin"} color={"#f54296"} />
       )}
     </CertificateContainer>
   );
