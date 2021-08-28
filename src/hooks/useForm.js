@@ -21,8 +21,8 @@ export const useForm = (options) => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const validations = options?.validations;
     if (validations) {
       let valid = true;
