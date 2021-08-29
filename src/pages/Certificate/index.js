@@ -33,16 +33,21 @@ export default function Certificate() {
 
   return (
     <Page background={eventInfo.backgroundImage}>
-      {certificateInfo ? (
-        <DigitalCertificate
-          color={"#f77dae"}
-          attendeeName={"Gustavo Barbosa Santos"}
-          activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
-          startEventDate={certificateInfo.startEventDate}
-          endEventDate={certificateInfo.endEventDate}
-          workload={10}
-          credentialNumber={certificateInfo.credential}
-        />
+      {isAvailable ? (
+        certificateInfo ? (
+          <DigitalCertificate
+            color={"#f77dae"}
+            attendeeName={certificateInfo.name}
+            activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
+            startEventDate={certificateInfo.startEventDate}
+            endEventDate={certificateInfo.endEventDate}
+            workload={10}
+            credentialNumber={certificateInfo.credential}
+            isInDashboardPage={false}
+          />
+        ) : (
+          <p>Certificado inválido.</p>
+        )
       ) : (
         <p>Certificado inválido.</p>
       )}

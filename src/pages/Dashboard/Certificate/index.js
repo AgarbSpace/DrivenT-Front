@@ -29,16 +29,21 @@ export default function Certificate() {
 
   return (
     <CertificateContainer>
-      {certificateInfo && isAvailable ? (
-        <DigitalCertificate
-          color={"#f77dae"}
-          attendeeName={"Gustavo Barbosa Santos"}
-          activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
-          startEventDate={certificateInfo.startEventDate}
-          endEventDate={certificateInfo.endEventDate}
-          workload={10}
-          credentialNumber={certificateInfo.credential}
-        />
+      {isAvailable ? (
+        certificateInfo ? (
+          <DigitalCertificate
+            color={"#f77dae"}
+            attendeeName={certificateInfo.name}
+            activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
+            startEventDate={certificateInfo.startEventDate}
+            endEventDate={certificateInfo.endEventDate}
+            workload={10}
+            credentialNumber={certificateInfo.credential}
+            isInDashboardPage={true}
+          />
+        ) : (
+          <p>O certificado digital ainda não está disponível.</p>
+        )
       ) : (
         <p>O certificado digital ainda não está disponível.</p>
       )}
