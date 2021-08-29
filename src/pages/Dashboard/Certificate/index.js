@@ -24,10 +24,12 @@ export default function Certificate() {
       const endEventDate = data.endDate;
 
       if (today.isAfter(endEventDate)) {
-        api.certificate.findOrCreate(userData.user.id).then(({ data }) => {
-          setCertificateInfo(data);
-          setIsAvailable(true);
-        });
+        api.certificate
+          .findOrCreate(userData.user.id, userData.token)
+          .then(({ data }) => {
+            setCertificateInfo(data);
+            setIsAvailable(true);
+          });
       }
     });
   }, []);
