@@ -1,11 +1,15 @@
 import api from "./api";
 
 export default class CertificateAPI {
-  get(attendeeId) {
-    return api.get(`/certificate/attendeeId/${attendeeId}`);
+  findOrCreate(attendeeId, token) {
+    return api.get(`/certificate/attendeeId/${attendeeId}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
   }
 
-  getByCredential(credential) {
+  findByCredential(credential) {
     return api.get(`/certificate/credential/${credential}`);
   }
 }

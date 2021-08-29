@@ -7,6 +7,8 @@ import useApi from "../../hooks/useApi";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
+import Loader from "react-loader-spinner";
+
 import Page from "../../components/Page";
 import DigitalCertificate from "../../components/Dashboard/Certificate/DigitalCertificate";
 
@@ -14,15 +16,17 @@ export default function Certificate() {
   const { eventInfo } = useContext(EventInfoContext);
   const { credential } = useParams();
 
+  const [isAvailable, setIsAvailable] = useState(false);
   const [certificateInfo, setCertificateInfo] = useState();
 
   const api = useApi();
 
   useEffect(() => {
     api.certificate
-      .getByCredential(credential)
+      .findByCredential(credential)
       .then(({ data }) => {
         setCertificateInfo(data);
+        setIsAvailable(true);
       })
       .catch((err) => {
         if (err.response) {
@@ -49,7 +53,7 @@ export default function Certificate() {
           <p>Certificado inválido.</p>
         )
       ) : (
-        <p>Certificado inválido.</p>
+        <Loader type={"TailSpin"} color={"#fff"} />
       )}
     </Page>
   );

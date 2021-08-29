@@ -6,6 +6,8 @@ import useApi from "../../../hooks/useApi";
 
 import UserContext from "../../../contexts/UserContext";
 
+import Loader from "react-loader-spinner";
+
 import DigitalCertificate from "../../../components/Dashboard/Certificate/DigitalCertificate";
 
 export default function Certificate() {
@@ -17,13 +19,18 @@ export default function Certificate() {
   const api = useApi();
 
   useEffect(() => {
-    api.certificate.get(userData.user.id).then(({ data }) => {
-      setCertificateInfo(data);
-
+    api.event.getEventInfo().then(({ data }) => {
       const today = dayjs();
-      const endEventDate = data.endEventDate;
+      const endEventDate = data.endDate;
 
-      if (today.isAfter(endEventDate)) setIsAvailable(true);
+      if (today.isAfter(endEventDate)) {
+        api.certificate
+          .findOrCreate(userData.user.id, userData.token)
+          .then(({ data }) => {
+            setCertificateInfo(data);
+            setIsAvailable(true);
+          });
+      }
     });
   }, []);
 
@@ -45,7 +52,7 @@ export default function Certificate() {
           <p>O certificado digital ainda não está disponível.</p>
         )
       ) : (
-        <p>O certificado digital ainda não está disponível.</p>
+        <Loader type={"TailSpin"} color={"#f54296"} />
       )}
     </CertificateContainer>
   );
