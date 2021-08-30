@@ -4,6 +4,7 @@ import styled from "styled-components";
 
 import useApi from "../../../hooks/useApi";
 
+import UserContext from "../../../contexts/UserContext";
 import EventInfoContext from "../../../contexts/EventInfoContext";
 
 import Loader from "react-loader-spinner";
@@ -14,6 +15,7 @@ export default function Certificate() {
   const [isAvailable, setIsAvailable] = useState(false);
   const [certificateInfo, setCertificateInfo] = useState(null);
 
+  const { userData } = useContext(UserContext);
   const { eventInfo } = useContext(EventInfoContext);
 
   const api = useApi();
@@ -23,7 +25,7 @@ export default function Certificate() {
     const endEventDate = eventInfo.endDate;
 
     if (today.isAfter(endEventDate)) {
-      api.certificate.findOrCreate().then(({ data }) => {
+      api.certificate.findOrCreate(userData.user.id).then(({ data }) => {
         setCertificateInfo(data);
         setIsAvailable(true);
       });
