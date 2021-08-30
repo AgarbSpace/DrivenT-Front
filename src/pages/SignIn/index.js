@@ -4,7 +4,7 @@ import { toast } from "react-toastify";
 import AuthLayout from "../../layouts/Auth";
 
 import Input from "../../components/Form/Input";
-import Button from "../../components/Form/Button"
+import Button from "../../components/Form/Button";
 import Link from "../../components/Link";
 import { Row, Title, Label } from "../../components/Auth";
 
@@ -30,6 +30,7 @@ export default function SignIn() {
     api.auth.signIn(email, password).then(response => {
       setUserData(response.data);
     }).catch(error => {
+      /* eslint-disable-next-line no-console */
       console.error(error);
       
       if (error.response) {

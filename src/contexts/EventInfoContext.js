@@ -16,6 +16,7 @@ export function EventInfoProvider({ children }) {
     api.event.getEventInfo().then(response => {
       setEventInfo(response.data);
     }).catch(error => {
+      /* eslint-disable-next-line no-console */
       console.error(error);
       setError(error);
     });

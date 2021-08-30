@@ -1,4 +1,4 @@
-import AuthenticatedApi from "./AuthenticatedApi"
+import AuthenticatedApi from "./AuthenticatedApi";
 import api from "./api";
 
 export default class CertificateAPI extends AuthenticatedApi {

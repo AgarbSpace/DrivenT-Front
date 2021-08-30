@@ -22,5 +22,5 @@ export default function ConditionalRoute({ check=() => [], ...props  }) {
     }
   }
 
-  return <Route {...props} />
+  return <Route {...props} />;
 }

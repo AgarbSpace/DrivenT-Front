@@ -11,7 +11,7 @@ export default function useApi() {
     event: new EventApi(),
     enrollment: new EnrollmentApi(),
     auth: new AuthApi(),
-    cepApi:new CepApi(),
+    cepApi: new CepApi(),
     attendeeApi: new AttendeeApi(),
     certificate: new CertificateAPI(),
     hotel: new HotelApi(),

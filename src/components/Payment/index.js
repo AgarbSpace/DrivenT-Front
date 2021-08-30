@@ -20,7 +20,7 @@ export const ListPaymentItems = styled.li`
     text-align: center;
     flex-wrap: wrap;
     align-items: center;
-    border: 0.15rem solid ${props => props.selected ? '#FA4098' : '#efefef'};
+    border: 0.15rem solid ${props => props.selected ? "#FA4098" : "#efefef"};
     padding: 0.6rem 1rem; 
     border-radius:0.5rem;
     margin: 0.5rem;
@@ -29,13 +29,13 @@ export const ListPaymentItems = styled.li`
         width: 30px;
         margin-right: 5px;
     }
-`
+`;
 export const FormRow = styled.div`
   display: flex;
   justify-content: space-between;
-`
+`;
 
 export const PaymentInfosForm = styled.div`
   padding: 0 0.5rem;
   margin: 0.6rem 0;
-`
+`;

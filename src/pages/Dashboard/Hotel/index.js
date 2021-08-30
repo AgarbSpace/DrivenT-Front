@@ -1,8 +1,8 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef, useEffect } from "react";
 
 import { useHistory } from "react-router-dom";
-import Button from '../../../components/Form/Button'
-import { FaChevronLeft, FaChevronRight } from 'react-icons/fa'
+import Button from "../../../components/Form/Button";
+import { FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import useApi from "../../../hooks/useApi";
 import { toast } from "react-toastify";
 
@@ -19,82 +19,82 @@ import {
   LineShimmer,
   ImageShimmer,
   ContainerHotelShimmer
-} from '../../../components/Hotel'
+} from "../../../components/Hotel";
 
 import Shimmer from "react-shimmer-effect";
 
 export default function Hotel() {
-  const [selectedHotel, setSelectedHotel] = useState()
-  const [selectedBedroom, setSelectedBedroom] = useState({})
+  const [selectedHotel, setSelectedHotel] = useState();
+  const [selectedBedroom, setSelectedBedroom] = useState({});
 
-  const [hotels, setHotels] = useState([])
-  const [isLoadingHotel, setIsHotelLoading] = useState(false)
+  const [hotels, setHotels] = useState([]);
+  const [isLoadingHotel, setIsHotelLoading] = useState(false);
 
-  const [bedrooms, setBedrooms] = useState([])
-  const [isLoadingBedrooms, setIsLoadingBedrooms] = useState(false)
+  const [bedrooms, setBedrooms] = useState([]);
+  const [isLoadingBedrooms, setIsLoadingBedrooms] = useState(false);
 
-  const [isLoadingRendBedboom, setIsLoadingRendBedboom] = useState(false)
+  const [isLoadingRendBedboom, setIsLoadingRendBedboom] = useState(false);
   
   const history = useHistory();
-  const api = useApi()
-  const carouselRef = useRef(null)
+  const api = useApi();
+  const carouselRef = useRef(null);
 
   useEffect(() => {
-    setIsHotelLoading(true)
-      api.hotel.getHotels()
-        .then(response => {
-          setHotels(response.data)
-        })
-        .catch(err => {
-          toast("Tivemos um erro ao carregar os hoteis");
-        })
-        .finally(() => setIsHotelLoading(false))
-  }, [])
+    setIsHotelLoading(true);
+    api.hotel.getHotels()
+      .then(response => {
+        setHotels(response.data);
+      })
+      .catch(err => {
+        toast("Tivemos um erro ao carregar os hoteis");
+      })
+      .finally(() => setIsHotelLoading(false));
+  }, []);
 
   useEffect(() => {
-    if(selectedHotel){
-      setIsLoadingBedrooms(true)
+    if(selectedHotel) {
+      setIsLoadingBedrooms(true);
       
       api.hotel.getHotelBedrooms(selectedHotel).then(response => {
-        setBedrooms(response.data)
+        setBedrooms(response.data);
       })
-      .catch(() => toast("Tivemos um erro ao carregar os quartos desse hotel"))
-      .finally(() => setIsLoadingBedrooms(false))
+        .catch(() => toast("Tivemos um erro ao carregar os quartos desse hotel"))
+        .finally(() => setIsLoadingBedrooms(false));
     }
-  }, [selectedHotel])
+  }, [selectedHotel]);
 
   const handleRight = () => {
-    const carousel = carouselRef.current
-    if(carousel){
-      carousel.scrollLeft += carousel.offsetWidth
+    const carousel = carouselRef.current;
+    if(carousel) {
+      carousel.scrollLeft += carousel.offsetWidth;
     }
-  }
+  };
 
   const handleLeft = () => {
-    const carousel = carouselRef.current
-    if(carousel){
-      carousel.scrollLeft -= carousel.offsetWidth
+    const carousel = carouselRef.current;
+    if(carousel) {
+      carousel.scrollLeft -= carousel.offsetWidth;
     }
-  }
+  };
   
   const handleSelectBedroom = (bedroom) => {
-    if(bedroom.vacancies !== 0){
-      setSelectedBedroom(bedroom)
+    if(bedroom.vacancies !== 0) {
+      setSelectedBedroom(bedroom);
     }
-  }
+  };
 
-  const handleRentAccommodation = async () => {
+  const handleRentAccommodation = async() => {
     try{
-      setIsLoadingRendBedboom(true)
-      await api.hotel.rentAccommodation(selectedHotel, selectedBedroom.id)
+      setIsLoadingRendBedboom(true);
+      await api.hotel.rentAccommodation(selectedHotel, selectedBedroom.id);
       toast("Quarto reservado com sucesso!");
       history.push("/activities");
-    }catch(err){
+    }catch(err) {
       toast("Ops! Tivemos um erro ao reversar seu quarto");
     }finally{ 
-      setIsLoadingRendBedboom(false)
+      setIsLoadingRendBedboom(false);
     }
-  }
+  };
 
   return (
     <Container>
@@ -105,7 +105,7 @@ export default function Hotel() {
           <FaChevronLeft />
         </ButtonLeft>
         <HotelList ref={carouselRef}> 
-          {isLoadingHotel ? Array.from({length: 4}, (_, index) =>(
+          {isLoadingHotel ? Array.from({ length: 4 }, (_, index) => (
             <ContainerHotelShimmer key={index}>
               <Shimmer>
                 <ImageShimmer />
@@ -142,14 +142,14 @@ export default function Hotel() {
           <div>
             <ul>
               {isLoadingBedrooms ? 
-                  Array.from({ length: 5 }, (_, index) => <ContainerRoomShimmer key={index}/>)
+                Array.from({ length: 5 }, (_, index) => <ContainerRoomShimmer key={index}/>)
                 :
                 bedrooms.map(bedroom => (
                   <BedroomItem 
                     selected={selectedBedroom.id === bedroom.id} 
                     onClick={() => handleSelectBedroom(bedroom)}>
-                      {bedroom.number}
-                    </BedroomItem>
+                    {bedroom.number}
+                  </BedroomItem>
                 ))
               }
             </ul>

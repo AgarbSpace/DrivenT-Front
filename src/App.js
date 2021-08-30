@@ -65,7 +65,6 @@ function ensureCountdownOngoing() {
 function ensureCountdownOver() {
   const { eventInfo } = useContext(EventInfoContext);
   const { userData } = useContext(UserContext);
- 
 
   return [
     { to: "/dashboard", check: () => !userData.token },

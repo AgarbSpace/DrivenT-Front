@@ -19,7 +19,7 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  ${props => props.active ? 'background-color: rgba(0, 0, 0, .2);' : ''}
+  ${props => props.active ? "background-color: rgba(0, 0, 0, .2);" : ""}
 
   &:hover {
     background-color: rgba(0, 0, 0, .2);

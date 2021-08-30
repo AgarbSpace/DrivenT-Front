@@ -6,7 +6,7 @@ export default class HotelApi extends AuthenticatedApi {
     return api.get("/hotels");
   }
   
-  getHotelBedrooms( hotelID ){
+  getHotelBedrooms( hotelID ) {
     return api.get(`/hotels/${hotelID}/bedrooms`);
   }
 
