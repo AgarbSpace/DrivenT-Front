@@ -1,10 +1,10 @@
-import EventApi from "../services/event";
-import EnrollmentApi from "../services/enrollment";
+import EventApi from "../services/EventApi";
+import EnrollmentApi from "../services/EnrollmentApi";
 import AuthApi from "../services/auth";
-import CepApi from "../services/cepApi";
-import AttendeeApi from "../services/attendee";
-import CertificateAPI from "../services/certificate";
-import HotelApi from "../services/hotel";
+import CepApi from "../services/CepApi";
+import AttendeeApi from "../services/AttendeeApi";
+import CertificateAPI from "../services/CertificateApi";
+import HotelApi from "../services/HotelApi";
 
 export default function useApi() {
   return {
