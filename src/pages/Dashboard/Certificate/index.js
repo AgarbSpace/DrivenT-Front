@@ -5,6 +5,7 @@ import styled from "styled-components";
 import useApi from "../../../hooks/useApi";
 
 import UserContext from "../../../contexts/UserContext";
+import EventInfoContext from "../../../contexts/EventInfoContext";
 
 import Loader from "react-loader-spinner";
 
@@ -15,21 +16,20 @@ export default function Certificate() {
   const [certificateInfo, setCertificateInfo] = useState(null);
 
   const { userData } = useContext(UserContext);
+  const { eventInfo } = useContext(EventInfoContext);
 
   const api = useApi();
 
   useEffect(() => {
-    api.event.getEventInfo().then(({ data }) => {
-      const today = dayjs();
-      const endEventDate = data.endDate;
+    const today = dayjs();
+    const endEventDate = eventInfo.endDate;
 
-      if (today.isAfter(endEventDate)) {
-        api.certificate.findOrCreate(userData.user.id).then(({ data }) => {
-          setCertificateInfo(data);
-          setIsAvailable(true);
-        });
-      }
-    });
+    if (today.isAfter(endEventDate)) {
+      api.certificate.findOrCreate(userData.user.id).then(({ data }) => {
+        setCertificateInfo(data);
+        setIsAvailable(true);
+      });
+    }
   }, []);
 
   return (
@@ -38,7 +38,7 @@ export default function Certificate() {
         certificateInfo ? (
           <DigitalCertificate
             color={"#f77dae"}
-            attendeeName={"Gustavo Barbosa Santos"}
+            attendeeName={certificateInfo.name}
             activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
             startEventDate={certificateInfo.startEventDate}
             endEventDate={certificateInfo.endEventDate}

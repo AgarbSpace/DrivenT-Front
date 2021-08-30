@@ -41,7 +41,7 @@ export default function Certificate() {
         certificateInfo ? (
           <DigitalCertificate
             color={"#f77dae"}
-            attendeeName={"Gustavo Barbosa Santos"}
+            attendeeName={certificateInfo.name}
             activities={["Palestra 1", "Palestra 2", "Palestra 3"]}
             startEventDate={certificateInfo.startEventDate}
             endEventDate={certificateInfo.endEventDate}
