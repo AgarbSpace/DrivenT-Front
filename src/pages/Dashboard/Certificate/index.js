@@ -44,6 +44,7 @@ export default function Certificate() {
             endEventDate={certificateInfo.endEventDate}
             workload={10}
             credentialNumber={certificateInfo.credential}
+            isInDashboardPage={true}
           />
         ) : (
           <p>O certificado digital ainda não está disponível.</p>

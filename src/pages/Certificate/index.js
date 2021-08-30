@@ -47,6 +47,7 @@ export default function Certificate() {
             endEventDate={certificateInfo.endEventDate}
             workload={10}
             credentialNumber={certificateInfo.credential}
+            isInDashboardPage={false}
           />
         ) : (
           <p>Certificado inválido.</p>

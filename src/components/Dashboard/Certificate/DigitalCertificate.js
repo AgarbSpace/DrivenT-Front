@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -18,6 +19,7 @@ export default function DigitalCertificate({
   endEventDate,
   workload,
   credentialNumber,
+  isInDashboardPage,
 }) {
   const [primaryColor, setPrimaryColor] = useState("#f77dae");
 
@@ -84,7 +86,16 @@ export default function DigitalCertificate({
         </Footer>
       </CertificateWrapper>
 
-      <Button onClick={downloadCertificate}>Fazer Download</Button>
+      <Options>
+        <Button onClick={downloadCertificate} color="primary">
+          Fazer Download
+        </Button>
+        {isInDashboardPage && (
+          <Link to={`/certificate/credential/${credentialNumber}`}>
+            <Button>Visualizar</Button>
+          </Link>
+        )}
+      </Options>
     </CertificateContainer>
   );
 }
@@ -211,4 +222,16 @@ const Credential = styled.div`
   justify-content: center;
 
   opacity: 0.45;
+`;
+
+const Options = styled.div`
+  display: flex;
+
+  > a {
+    text-decoration: none;
+  }
+
+  > button {
+    margin: 0 10px;
+  }
 `;
