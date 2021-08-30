@@ -101,7 +101,7 @@ export default function PersonalInformationForm() {
 
       number: {
         custom: {
-          isValid: (value) => /^(\d){2}(9)?(\d){8}$/.test(value),
+          isValid: (value) => Number(value),
           message: "Digite um número válido",
         },
       },
@@ -121,7 +121,7 @@ export default function PersonalInformationForm() {
           neighborhood: data.neighborhood,
           addressDetail: data.addressDetail,
         },
-        phone: data.phone,
+        phone: data.phone.replace(/[^0-9]+/g, "").replace(/^(\d{2})(9?\d{4})(\d{4})$/, "($1) $2-$3"),
         isHotelGuest: data.isHotelGuest,
       };
 
@@ -250,11 +250,7 @@ export default function PersonalInformationForm() {
               label="Data de Nascimento"
               inputVariant="outlined"
               clearable
-              value={
-                data.birthday !== null
-                  ? dayjs(data.birthday, "DD-MM-YYYY").toString()
-                  : null
-              }
+              value={data.birthday && dayjs(data.birthday, "DD-MM-YYYY").toString()}
               onChange={(date) => {
                 customHandleChange("birthday", (d) => d && dayjs(d).format("DD-MM-YYYY"))(date);
               }}
@@ -264,7 +260,7 @@ export default function PersonalInformationForm() {
           <InputWrapper>
             <Input
               label="Telefone"
-              mask={data.phone.length < 14 ? "(99) 9999-99999" : "(99) 99999-9999"} // o 9 extra no primeiro é para permitir digitar um número a mais e então passar pra outra máscara - gambiarra? temos
+              mask={data.phone.length < 15 ? "(99) 9999-99999" : "(99) 99999-9999"} // o 9 extra no primeiro é para permitir digitar um número a mais e então passar pra outra máscara - gambiarra? temos
               name="phone"
               value={data.phone || ""}
               onChange={handleChange("phone")}
@@ -352,10 +348,10 @@ export default function PersonalInformationForm() {
               onChange={handleChange("addressDetail")}
             />
           </InputWrapper>
-
+          
           <CustomSpan>
-            <span>
-              book hotel
+            <div>
+              Reservar Hotel
               <Checkbox
                 name="isHotelGuest"
                 inputProps={{ "aria-label": "primary checkbox" }}
@@ -364,7 +360,7 @@ export default function PersonalInformationForm() {
                   customHandleChange("isHotelGuest")(e.target.checked)
                 }
               />
-            </span>
+            </div>
             <Button type="submit" disabled={dinamicInputIsLoading}>
               Salvar
             </Button>
