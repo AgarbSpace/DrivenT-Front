@@ -94,7 +94,7 @@ export default function PersonalInformationForm() {
 
       birthday: {
         custom: {
-          isValid: (value) => !!new Date(value.split("-").reverse().join("-")),
+          isValid: (value) => !!new Date(value?.split("-").reverse().join("-")),
           message: "Selecione uma data de aniversário",
         },
       },
