@@ -32,7 +32,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -60,11 +61,17 @@
       ],
       "comma-spacing": [
         "error",
-        { "before": false, "after": true }
+        {
+          "before": false,
+          "after": true
+        }
       ],
       "semi-spacing": [
         "error",
-        { "before": false, "after": true }
+        {
+          "before": false,
+          "after": true
+        }
       ],
       "object-curly-spacing": [
         "error",
@@ -72,7 +79,9 @@
       ],
       "key-spacing": [
         "error",
-        { "beforeColon": false }
+        {
+          "beforeColon": false
+        }
       ],
       "padded-blocks": [
         "error",
@@ -80,12 +89,16 @@
       ],
       "no-multiple-empty-lines": [
         "error",
-        { "max": 1 }
+        {
+          "max": 1
+        }
       ],
       "lines-between-class-members": [
         "error",
         "always",
-        { "exceptAfterSingleLine": true }
+        {
+          "exceptAfterSingleLine": true
+        }
       ],
       "space-before-function-paren": [
         "error",
@@ -101,7 +114,10 @@
       ],
       "arrow-spacing": [
         "error",
-        { "before": true, "after": true }
+        {
+          "before": true,
+          "after": true
+        }
       ],
       "no-console": "warn"
     }
@@ -117,5 +133,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "git-commit-msg-linter": "^3.2.8",
+    "husky": "^7.0.2",
+    "lint-staged": "^11.1.2"
   }
 }
