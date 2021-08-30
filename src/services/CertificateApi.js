@@ -2,8 +2,8 @@ import AuthenticatedApi from "./AuthenticatedApi"
 import api from "./api";
 
 export default class CertificateAPI extends AuthenticatedApi {
-  findOrCreate() {
-    return api.get(`/certificate`, {
+  findOrCreate(attendeeId) {
+    return api.get(`/certificate/attendeeId/${attendeeId}`, {
       headers: {
         ...this.getAuthorizationHeader()
       }
