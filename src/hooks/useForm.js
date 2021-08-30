@@ -6,6 +6,7 @@ export const useForm = (options) => {
 
   const handleChange = (key, sanitizeFn) => (e) => {
     const value = sanitizeFn ? sanitizeFn(e.target.value) : e.target.value;
+
     setData({
       ...data,
       [key]: value,
@@ -20,8 +21,8 @@ export const useForm = (options) => {
     });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (event) => {
+    event.preventDefault();
     const validations = options?.validations;
     if (validations) {
       let valid = true;
