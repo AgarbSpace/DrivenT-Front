@@ -1,4 +1,4 @@
-import PersonalInformationForm from "../../../components/PersonalInFormationForm";
+import PersonalInformationForm from "../../../components/PersonalInformationForm";
 
 export default function FillSubscription() {
   return (

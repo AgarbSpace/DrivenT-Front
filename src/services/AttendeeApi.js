@@ -1,9 +1,9 @@
 import AuthenticatedApi from "./AuthenticatedApi";
 import api from "./api";
 
-export default class AttendeeApi extends AuthenticatedApi {
+export default class EnrollmentApi extends AuthenticatedApi {
   save(body) {
-    return api.post("/attendee", body, {
+    return api.post("/enrollments", body, {
       headers: {
         ...this.getAuthorizationHeader()
       }
@@ -11,7 +11,7 @@ export default class AttendeeApi extends AuthenticatedApi {
   }
 
   getPersonalInformations() {
-    return api.get("/attendee", {
+    return api.get("/enrollments", {
       headers: {
         ...this.getAuthorizationHeader()
       }

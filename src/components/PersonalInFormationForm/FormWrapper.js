@@ -5,7 +5,8 @@ export const FormWrapper = styled.form`
   width: 100%;
   flex-wrap: wrap;
   > div {
-    width: 50%;
+    width: calc(50% - 20px);
+    margin: 0 10px 0 0;
   }
 
   @media (max-width: 600px) {
