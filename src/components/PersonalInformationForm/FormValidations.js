@@ -1,4 +1,4 @@
-export default {
+const validations = {
   name: {
     custom: {
       isValid: (value) => isValidString(value),
@@ -69,6 +69,8 @@ export default {
     },
   },
 };
+
+export default validations;
 
 function isValidString(value) {
   return value || value?.trim();

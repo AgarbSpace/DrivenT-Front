@@ -12,7 +12,6 @@ import Countdown from "./pages/Countdown";
 import Enroll from "./pages/Enroll";
 import SignIn from "./pages/SignIn";
 import Dashboard from "./pages/Dashboard";
-import Certificate from "./pages/Certificate/";
 
 import EventInfoContext, { EventInfoProvider } from "./contexts/EventInfoContext";
 import UserContext, { UserProvider } from "./contexts/UserContext";
@@ -39,10 +38,6 @@ export default function App() {
 
               <ConditionalRoute check={ensureAuthenticated} path="/dashboard">
                 <Dashboard />
-              </ConditionalRoute>
-              
-              <ConditionalRoute check={ensureEventIsFinished} path="/certificate/credential/:credential" exact>
-                <Certificate />
               </ConditionalRoute>
             </Switch>
           </Router>

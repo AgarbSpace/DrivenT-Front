@@ -25,7 +25,7 @@ dayjs.extend(CustomParseFormat);
 
 export default function PersonalInformationForm() {
   const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
-  const { enrollmentApi, cepApi } = useApi();
+  const { enrollment, cep } = useApi();
 
   const {
     handleSubmit,
@@ -54,7 +54,7 @@ export default function PersonalInformationForm() {
         phone: data.phone.replace(/[^0-9]+/g, "").replace(/^(\d{2})(9?\d{4})(\d{4})$/, "($1) $2-$3"),
       };
 
-      enrollmentApi.save(newData).then(() => {
+      enrollment.save(newData).then(() => {
         toast("Salvo com sucesso!");
       }).catch((error) => {
         if (error.response?.data?.details) {
@@ -85,9 +85,7 @@ export default function PersonalInformationForm() {
   });
 
   useEffect(() => {
-    enrollmentApi.getPersonalInformations().then(response => {
-      console.log(response);
-
+    enrollment.getPersonalInformations().then(response => {
       if (response.status !== 200) {
         return;
       }
@@ -126,7 +124,7 @@ export default function PersonalInformationForm() {
       };
 
       setDynamicInputIsLoading(true);
-      cepApi.getAddress(valueWithoutMask).then(({ data }) => {
+      cep.getAddress(valueWithoutMask).then(({ data }) => {
         setDynamicInputIsLoading(false);
         setData({
           ...newDataValues,
