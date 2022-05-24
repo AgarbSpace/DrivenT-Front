@@ -8,7 +8,7 @@ const validations = {
 
   cpf: {
     custom: {
-      isValid: (value) => parseInt(value?.length, 10) === 14,
+      isValid: (value) => parseInt(value?.replaceAll(".", "")?.replace("-", "")?.length, 10) === 11,
       message: "Digite um CPF válido",
     },
   },
@@ -57,7 +57,7 @@ const validations = {
 
   birthday: {
     custom: {
-      isValid: (value) => !value || !isNaN(new Date(value?.split("-").reverse().join("-"))),
+      isValid: (value) => !value || !isNaN(new Date(value?.split("-").join("-"))),
       message: "Selecione uma data de aniversário",
     },
   },

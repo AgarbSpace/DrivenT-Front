@@ -10,6 +10,7 @@ import MenuItem from "@material-ui/core/MenuItem";
 
 import useCep from "../../hooks/api/useCep";
 import useEnrollment from "../../hooks/api/useEnrollment";
+import useSaveEnrollment from "../../hooks/api/useSaveEnrollment";
 import { useForm } from "../../hooks/useForm";
 
 import Input from "../Form/Input";
@@ -28,6 +29,7 @@ export default function PersonalInformationForm() {
   const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
   const { getCep } = useCep();
   const { enrollment } = useEnrollment();
+  const { saveEnrollmentLoading, saveEnrollment } = useSaveEnrollment();
 
   const {
     handleSubmit,
@@ -39,11 +41,11 @@ export default function PersonalInformationForm() {
   } = useForm({
     validations: FormValidations,
 
-    onSubmit: (data) => {
+    onSubmit: async(data) => {
       const newData = {
         name: data.name,
-        cpf: data.cpf,
-        birthday: data.birthday,
+        cpf: data.cpf.replaceAll(".", "").replaceAll("-", ""),
+        birthday: dayjs(data.birthday).toISOString(),
         address: {
           cep: data.cep,
           street: data.street,
@@ -56,19 +58,12 @@ export default function PersonalInformationForm() {
         phone: data.phone.replace(/[^0-9]+/g, "").replace(/^(\d{2})(9?\d{4})(\d{4})$/, "($1) $2-$3"),
       };
 
-      // enrollment.save(newData).then(() => {
-      //   toast("Salvo com sucesso!");
-      // }).catch((error) => {
-      //   if (error.response?.data?.details) {
-      //     for (const detail of error.response.data.details) {
-      //       toast(detail);
-      //     }
-      //   } else {
-      //     toast("Não foi possível");
-      //   }
-      //   /* eslint-disable-next-line no-console */
-      //   console.log(error);
-      // });
+      try {
+        await saveEnrollment(newData);
+        toast("Informações salvas com sucesso!");
+      } catch (err) {
+        toast("Não foi possível salvar suas informações!");
+      }
     },
 
     initialValues: {
@@ -171,7 +166,7 @@ export default function PersonalInformationForm() {
               clearable
               value={dayjs(data.birthday).format("YYYY-MM-DD").toString()}
               onChange={(date) => {
-                customHandleChange("birthday", (d) => d && dayjs(d).format("DD-MM-YYYY"))(date);
+                customHandleChange("birthday", (d) => d && dayjs(d).format("YYYY-MM-DD"))(date);
               }}
             />
             {errors.birthday && <ErrorMsg>{errors.birthday}</ErrorMsg>}
@@ -269,7 +264,7 @@ export default function PersonalInformationForm() {
           </InputWrapper>
           
           <SubmitContainer>
-            <Button type="submit" disabled={dynamicInputIsLoading}>
+            <Button type="submit" disabled={dynamicInputIsLoading || saveEnrollmentLoading}>
               Salvar
             </Button>
           </SubmitContainer>
