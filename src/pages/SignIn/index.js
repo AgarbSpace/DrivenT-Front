@@ -1,5 +1,6 @@
 import { useState, useContext } from "react";
 import { toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
 
 import AuthLayout from "../../layouts/Auth";
 
@@ -11,45 +12,37 @@ import { Row, Title, Label } from "../../components/Auth";
 import EventInfoContext from "../../contexts/EventInfoContext";
 import UserContext from "../../contexts/UserContext";
 
-import useApi from "../../hooks/useApi";
+import useSignIn from "../../hooks/api/useSignIn";
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loadingSignIn, setLoadingSignIn] = useState(false);
 
-  const api = useApi();
+  const { loadingSignIn, signIn } = useSignIn();
 
   const { eventInfo } = useContext(EventInfoContext);
   const { setUserData } = useContext(UserContext);
-  
-  function submit(event) {
-    event.preventDefault();
-    setLoadingSignIn(true);
 
-    api.auth.signIn(email, password).then(response => {
-      setUserData(response.data);
-    }).catch(error => {
-      /* eslint-disable-next-line no-console */
-      console.error(error);
-      
-      if (error.response) {
-        for (const detail of error.response.data.details) {
-          toast(detail);
-        }
-      } else {
-        toast("Não foi possível conectar ao servidor!");
-      }
-    }).then(() => {
-      setLoadingSignIn(false);
-    });
+  const navigate = useNavigate();
+  
+  async function submit(event) {
+    event.preventDefault();
+
+    try {
+      const userData = await signIn(email, password);
+      setUserData(userData);
+      toast("Login realizado com sucesso!");
+      navigate("/dashboard");
+    } catch (err) {
+      toast("Não foi possível fazer o login!");
+    }
   } 
 
   return (
-    <AuthLayout background={eventInfo.backgroundImage}>
+    <AuthLayout background={eventInfo.backgroundImageUrl}>
       <Row>
-        <img src={eventInfo.logoImage} alt="Event Logo" />
-        <Title>{eventInfo.eventTitle}</Title>
+        <img src={eventInfo.logoImageUrl} alt="Event Logo" width="60px" />
+        <Title>{eventInfo.title}</Title>
       </Row>
       <Row>
         <Label>Entrar</Label>

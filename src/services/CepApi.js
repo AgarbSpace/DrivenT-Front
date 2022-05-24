@@ -1,7 +1,6 @@
 import api from "./externalApi";
 
-export default class CepApi {
-  getAddress(cep) {
-    return api.get(`https://viacep.com.br/ws/${cep}/json/`);
-  }
+export async function getAddress(cep) {
+  const response = await api.get(`https://viacep.com.br/ws/${cep}/json/`);
+  return response.data;
 }

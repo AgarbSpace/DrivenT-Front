@@ -1,20 +1,21 @@
-import AuthenticatedApi from "./AuthenticatedApi";
 import api from "./api";
 
-export default class EnrollmentApi extends AuthenticatedApi {
-  save(body) {
-    return api.post("/enrollments", body, {
-      headers: {
-        ...this.getAuthorizationHeader()
-      }
-    });
-  }
+export async function save(body, token) {
+  const response = await api.post("/enrollments", body, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
 
-  getPersonalInformations() {
-    return api.get("/enrollments", {
-      headers: {
-        ...this.getAuthorizationHeader()
-      }
-    });
-  }
+  return response.data;
+}
+
+export async function getPersonalInformations(token) {
+  const response = await api.get("/enrollments", {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  });
+
+  return response.data;
 }

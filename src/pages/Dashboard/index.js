@@ -1,10 +1,5 @@
 import { useContext } from "react";
-import {
-  Switch,
-  Route,
-  Redirect,
-  useRouteMatch
-} from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
@@ -12,46 +7,16 @@ import EventInfoContext from "../../contexts/EventInfoContext";
 import NavigationBar from "../../components/Dashboard/NavigationBar";
 
 import DashboardLayout from "../../layouts/Dashboard";
-import FillSubscription from "./FillSubscription";
-import Payment from "./Payment";
-import Hotel from "./Hotel";
-import Activities from "./Activities";
-import Certificate from "./Certificate";
 
 export default function Dashboard() {
   const { eventInfo } = useContext(EventInfoContext);
-  const match = useRouteMatch();
 
   return (
-    <DashboardLayout background={eventInfo.backgroundImage}>
+    <DashboardLayout background={eventInfo.backgroundImageUrl}>
       <NavigationBar />
 
       <Container>
-        <Switch>
-          <Route path={`${match.path}/subscription`} exact>
-            <FillSubscription />
-          </Route>
-
-          <Route path={`${match.path}/payment`} exact>
-            <Payment />
-          </Route>
-
-          <Route path={`${match.path}/hotel`} exact>
-            <Hotel />
-          </Route>
-
-          <Route path={`${match.path}/activities`} exact>
-            <Activities />
-          </Route>
-
-          <Route path={`${match.path}/certificate`} exact>
-            <Certificate />
-          </Route>
-
-          <Route path={`${match.path}/`}>
-            <Redirect to={`${match.url}/subscription`} />
-          </Route>
-        </Switch>
+        <Outlet />
       </Container>
     </DashboardLayout>
   );

@@ -1,6 +1,6 @@
 import { useContext, useState } from "react";
 import { toast } from "react-toastify";
-import { useHistory } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 import AuthLayout from "../../layouts/Auth";
 
@@ -11,49 +11,40 @@ import Link from "../../components/Link";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
-import useApi from "../../hooks/useApi";
+import useSignUp from "../../hooks/api/useSignUp";
 
 export default function Enroll() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [loadingEnroll, setLoadingEnroll] = useState(false);
 
-  const history = useHistory();
+  const { loadingSignUp, signUp } = useSignUp();
 
-  const api = useApi();
+  const navigate = useNavigate();
   
   const { eventInfo } = useContext(EventInfoContext);
 
-  function submit(event) {
+  async function submit(event) {
     event.preventDefault();
-    setLoadingEnroll(true);
 
     if (password !== confirmPassword) {
       toast("As senhas devem ser iguais!");
     } else {
-      api.user.signUp(email, password).then(response => {
+      try {
+        await signUp(email, password);
         toast("Inscrito com sucesso! Por favor, faça login.");
-        history.push("/sign-in");
-      }).catch(error => {
-        if (error.response) {
-          for (const detail of error.response.data.details) {
-            toast(detail);
-          }
-        } else {
-          toast("Não foi possível conectar ao servidor!");
-        }
-      }).then(() => {
-        setLoadingEnroll(false);
-      });
+        navigate("/sign-in");
+      } catch (error) {
+        toast("Não foi possível fazer o cadastro!");
+      }
     }
   }
 
   return (
-    <AuthLayout background={eventInfo.backgroundImage}>
+    <AuthLayout background={eventInfo.backgroundImageUrl}>
       <Row>
-        <img src={eventInfo.logoImage} alt="Event Logo" />
-        <Title>{eventInfo.eventTitle}</Title>
+        <img src={eventInfo.logoImageUrl} alt="Event Logo" width="60px" />
+        <Title>{eventInfo.title}</Title>
       </Row>
       <Row>
         <Label>Inscrição</Label>
@@ -61,7 +52,7 @@ export default function Enroll() {
           <Input label="E-mail" type="text" fullWidth value={email} onChange={e => setEmail(e.target.value)} />
           <Input label="Senha" type="password" fullWidth value={password} onChange={e => setPassword(e.target.value)} />
           <Input label="Repita sua senha" type="password" fullWidth value={confirmPassword} onChange={e => setConfirmPassword(e.target.value)} />
-          <Button type="submit" color="primary" fullWidth disabled={loadingEnroll}>Inscrever</Button>
+          <Button type="submit" color="primary" fullWidth disabled={loadingSignUp}>Inscrever</Button>
         </form>
       </Row>
       <Row>

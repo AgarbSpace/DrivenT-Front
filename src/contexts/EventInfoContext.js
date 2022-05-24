@@ -1,42 +1,30 @@
-import { useState, useEffect, createContext } from "react";
+import { createContext } from "react";
 
 import Splash from "../components/Splash";
 
-import useApi from "../hooks/useApi";
+import useEvent from "../hooks/api/useEvent";
 
 const EventInfoContext = createContext();
 export default EventInfoContext;
 
 export function EventInfoProvider({ children }) {
-  const [eventInfo, setEventInfo] = useState(null);
-  const [error, setError] = useState(null);
-  const api = useApi();
+  const { event, eventLoading, eventError } = useEvent();
 
-  useEffect(() => {
-    api.event.getEventInfo().then(response => {
-      setEventInfo(response.data);
-    }).catch(error => {
-      /* eslint-disable-next-line no-console */
-      console.error(error);
-      setError(error);
-    });
-  }, []);
-
-  if (!eventInfo && !error) {
+  if (eventLoading) {
     return (
       <Splash loading />
     );
   }
 
-  if (error) {
-    let message = error.response ? error.response.data.message : "Could not connect to server. Please try again later.";
+  if (eventError) {
+    let message = eventError.response ? eventError.response.data.message : "Could not connect to server. Please try again later.";
     return (
       <Splash message={message} />
     );
   }
 
   return (
-    <EventInfoContext.Provider value={{ eventInfo, eventInfoError: error }}>
+    <EventInfoContext.Provider value={{ eventInfo: event, eventInfoError: eventError }}>
       { children }
     </EventInfoContext.Provider>
   );

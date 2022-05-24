@@ -1,7 +1,6 @@
 import api from "./api";
 
-export default class UserApi {
-  signUp(email, password) {
-    return api.post("/users", { email, password });
-  }
+export async function signUp(email, password) {
+  const response = await api.post("/users", { email, password });
+  return response.data;
 }

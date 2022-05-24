@@ -1,17 +1,26 @@
-import { useContext } from "react";
-import { useHistory } from "react-router-dom";
+import { useContext, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 import Timer from "./Timer";
 import Page from "../../components/Page";
+
+import useIsDateAfter from "../../hooks/useIsDateAfter";
 
 import EventInfoContext from "../../contexts/EventInfoContext";
 
 export default function Countdown() {
   const { eventInfo, loadingEventInfo } = useContext(EventInfoContext);
-  const history = useHistory();
+  const navigate = useNavigate();
+  const countdownOver = useIsDateAfter(eventInfo?.startsAt);
+
+  useEffect(() => {
+    if (countdownOver) {
+      navigate("/enroll");
+    }
+  }, [countdownOver]);
 
   function onZero() {
-    history.push("/enroll");
+    navigate("/enroll");
   }
 
   if (loadingEventInfo) {
@@ -19,9 +28,9 @@ export default function Countdown() {
   }
 
   return (
-    <Page background={eventInfo.backgroundImage}>
+    <Page background={eventInfo.backgroundImageUrl}>
       <div>Faltam</div>
-      <Timer time={eventInfo.startDate} onZero={onZero} />
+      <Timer time={eventInfo.startsAt} onZero={onZero} />
       <div>Para as inscrições</div>
     </Page>
   );

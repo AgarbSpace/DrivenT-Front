@@ -1,4 +1,4 @@
-import { Link, useLocation, useRouteMatch } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 import styled from "styled-components";
 
@@ -14,7 +14,6 @@ import NavigationButton from "./NavigationButton";
 
 export default function NavigationBar() {
   const location = useLocation();
-  const match = useRouteMatch();
 
   function isActive(buttonPath) {
     return location.pathname === buttonPath;
@@ -22,36 +21,36 @@ export default function NavigationBar() {
 
   return (
     <Container>
-      <Link to={`${match.path}/subscription`}>
-        <NavigationButton active={isActive(`${match.path}/subscription`)}>
+      <Link to="/dashboard/subscription">
+        <NavigationButton active={isActive("/dashboard/subscription")}>
           <FaFileContract />
           <span>Inscrição</span>
         </NavigationButton>
       </Link>
 
-      <Link to={`${match.path}/payment`}>
-        <NavigationButton active={isActive(`${match.path}/payment`)}>
+      <Link to="/dashboard/payment">
+        <NavigationButton active={isActive("/dashboard/paymen")}>
           <FaMoneyBill />
           <span>Pagamento</span>
         </NavigationButton>
       </Link>
 
-      <Link to={`${match.path}/hotel`}>
-        <NavigationButton active={isActive(`${match.path}/hotel`)}>
+      <Link to="/dashboard/hotel">
+        <NavigationButton active={isActive("/dashboard/hote")}>
           <FaBed />
           <span>Hotel</span>
         </NavigationButton>
       </Link>
 
-      <Link to={`${match.path}/activities`}>
-        <NavigationButton active={isActive(`${match.path}/activities`)}>
+      <Link to="/dashboard/activities">
+        <NavigationButton active={isActive("/dashboard/activitie")}>
           <FaCalendarWeek />
           <span>Atividades</span>
         </NavigationButton>
       </Link>
 
-      <Link to={`${match.path}/certificate`}>
-        <NavigationButton active={isActive(`${match.path}/certificate`)}>
+      <Link to="/dashboard/certificate">
+        <NavigationButton active={isActive("/dashboard/certificat")}>
           <FaCertificate />
           <span>Certificado</span>
         </NavigationButton>

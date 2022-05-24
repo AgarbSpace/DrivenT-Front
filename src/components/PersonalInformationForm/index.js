@@ -8,7 +8,8 @@ import CustomParseFormat from "dayjs/plugin/customParseFormat";
 import { MuiPickersUtilsProvider } from "@material-ui/pickers";
 import MenuItem from "@material-ui/core/MenuItem";
 
-import useApi from "../../hooks/useApi";
+import useCep from "../../hooks/api/useCep";
+import useEnrollment from "../../hooks/api/useEnrollment";
 import { useForm } from "../../hooks/useForm";
 
 import Input from "../Form/Input";
@@ -25,7 +26,8 @@ dayjs.extend(CustomParseFormat);
 
 export default function PersonalInformationForm() {
   const [dynamicInputIsLoading, setDynamicInputIsLoading] = useState(false);
-  const { enrollment, cep } = useApi();
+  const { getCep } = useCep();
+  const { enrollment } = useEnrollment();
 
   const {
     handleSubmit,
@@ -54,19 +56,19 @@ export default function PersonalInformationForm() {
         phone: data.phone.replace(/[^0-9]+/g, "").replace(/^(\d{2})(9?\d{4})(\d{4})$/, "($1) $2-$3"),
       };
 
-      enrollment.save(newData).then(() => {
-        toast("Salvo com sucesso!");
-      }).catch((error) => {
-        if (error.response?.data?.details) {
-          for (const detail of error.response.data.details) {
-            toast(detail);
-          }
-        } else {
-          toast("Não foi possível");
-        }
-        /* eslint-disable-next-line no-console */
-        console.log(error);
-      });
+      // enrollment.save(newData).then(() => {
+      //   toast("Salvo com sucesso!");
+      // }).catch((error) => {
+      //   if (error.response?.data?.details) {
+      //     for (const detail of error.response.data.details) {
+      //       toast(detail);
+      //     }
+      //   } else {
+      //     toast("Não foi possível");
+      //   }
+      //   /* eslint-disable-next-line no-console */
+      //   console.log(error);
+      // });
     },
 
     initialValues: {
@@ -85,34 +87,28 @@ export default function PersonalInformationForm() {
   });
 
   useEffect(() => {
-    enrollment.getPersonalInformations().then(response => {
-      if (response.status !== 200) {
-        return;
-      }
-      
-      const { name, cpf, birthday, phone, address } = response.data;
-
+    if (enrollment) {
       setData({
-        name,
-        cpf,
-        birthday,
-        phone,
-        cep: address.cep,
-        street: address.street,
-        city: address.city,
-        state: address.state,
-        number: address.number,
-        neighborhood: address.neighborhood,
-        addressDetail: address.addressDetail,
+        name: enrollment.name,
+        cpf: enrollment.cpf,
+        birthday: enrollment.birthday,
+        phone: enrollment.phone,
+        cep: enrollment.address.cep,
+        street: enrollment.address.street,
+        city: enrollment.address.city,
+        number: enrollment.address.number,
+        state: enrollment.address.state,
+        neighborhood: enrollment.address.neighborhood,
+        addressDetail: enrollment.address.addressDetail
       });
-    });
-  }, []);
+    }
+  }, [enrollment]);
 
   function isValidCep(cep) {
     return cep.length === 8;
   }
 
-  function handleCepChanges(event) {
+  async function handleCepChanges(event) {
     const { name, value } = event.target;
 
     const valueWithoutMask = value.replace("-", "");
@@ -124,15 +120,15 @@ export default function PersonalInformationForm() {
       };
 
       setDynamicInputIsLoading(true);
-      cep.getAddress(valueWithoutMask).then(({ data }) => {
-        setDynamicInputIsLoading(false);
-        setData({
-          ...newDataValues,
-          street: data.logradouro,
-          city: data.localidade,
-          neighborhood: data.bairro,
-          state: data.uf,
-        });
+      const cepData = await getCep(valueWithoutMask);
+      setDynamicInputIsLoading(false);
+
+      setData({
+        ...newDataValues,
+        street: cepData.logradouro,
+        city: cepData.localidade,
+        neighborhood: cepData.bairro,
+        state: cepData.uf,
       });
     }
   };
@@ -147,7 +143,7 @@ export default function PersonalInformationForm() {
               label="Nome Completo"
               name="name"
               type="text"
-              value={data.name || ""}
+              value={data?.name || ""}
               onChange={handleChange("name")}
             />
             {errors.name && <ErrorMsg>{errors.name}</ErrorMsg>}
@@ -159,7 +155,7 @@ export default function PersonalInformationForm() {
               type="text"
               maxLength="14"
               mask="999.999.999-99"
-              value={data.cpf || ""}
+              value={data?.cpf || ""}
               onChange={handleChange("cpf")}
             />
             {errors.cpf && <ErrorMsg>{errors.cpf}</ErrorMsg>}
@@ -173,7 +169,7 @@ export default function PersonalInformationForm() {
               label="Data de Nascimento"
               inputVariant="outlined"
               clearable
-              value={data.birthday && dayjs(data.birthday, "DD-MM-YYYY").toString()}
+              value={dayjs(data.birthday).format("YYYY-MM-DD").toString()}
               onChange={(date) => {
                 customHandleChange("birthday", (d) => d && dayjs(d).format("DD-MM-YYYY"))(date);
               }}
@@ -183,9 +179,9 @@ export default function PersonalInformationForm() {
           <InputWrapper>
             <Input
               label="Telefone"
-              mask={data.phone.length < 15 ? "(99) 9999-99999" : "(99) 99999-9999"} // o 9 extra no primeiro é para permitir digitar um número a mais e então passar pra outra máscara - gambiarra? temos
+              mask={data?.phone.length < 15 ? "(99) 9999-99999" : "(99) 99999-9999"} // o 9 extra no primeiro é para permitir digitar um número a mais e então passar pra outra máscara - gambiarra? temos
               name="phone"
-              value={data.phone || ""}
+              value={data?.phone || ""}
               onChange={handleChange("phone")}
             />
             {errors.phone && <ErrorMsg>{errors.phone}</ErrorMsg>}
@@ -195,7 +191,7 @@ export default function PersonalInformationForm() {
               label="CEP"
               name="cep"
               mask="99999-999"
-              value={data.cep || ""}
+              value={data?.cep || ""}
               onChange={(e) => {
                 handleChange("cep")(e);
                 handleCepChanges(e);
@@ -208,7 +204,7 @@ export default function PersonalInformationForm() {
               label="Estado"
               name="state"
               id="state"
-              value={data.state || ""}
+              value={data?.state || ""}
               onChange={handleChange("state")}
             >
               <MenuItem value="">
@@ -227,7 +223,7 @@ export default function PersonalInformationForm() {
             <Input
               label="Cidade"
               name="city"
-              value={data.city || ""}
+              value={data?.city || ""}
               onChange={handleChange("city")}
               disabled={dynamicInputIsLoading}
             />
@@ -237,7 +233,7 @@ export default function PersonalInformationForm() {
             <Input
               label="Rua"
               name="street"
-              value={data.street || ""}
+              value={data?.street || ""}
               onChange={handleChange("street")}
               disabled={dynamicInputIsLoading}
             />
@@ -248,7 +244,7 @@ export default function PersonalInformationForm() {
             <Input
               label="Número"
               name="number"
-              value={data.number || ""}
+              value={data?.number || ""}
               onChange={handleChange("number")}
             />
             {errors.number && <ErrorMsg>{errors.number}</ErrorMsg>}
@@ -257,7 +253,7 @@ export default function PersonalInformationForm() {
             <Input
               label="Bairro"
               name="neighborhood"
-              value={data.neighborhood || ""}
+              value={data?.neighborhood || ""}
               onChange={handleChange("neighborhood")}
               disabled={dynamicInputIsLoading}
             />
@@ -267,7 +263,7 @@ export default function PersonalInformationForm() {
             <Input
               label="Complemento"
               name="addressDetail"
-              value={data.addressDetail || ""}
+              value={data?.addressDetail || ""}
               onChange={handleChange("addressDetail")}
             />
           </InputWrapper>
