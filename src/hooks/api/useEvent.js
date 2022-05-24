@@ -6,12 +6,12 @@ export default function useEvent() {
   const {
     data: event,
     loading: eventLoading,
-    error: eventError
+    error: eventError,
   } = useAsync(eventApi.getEventInfo);
 
   return {
     event,
     eventLoading,
-    eventError
+    eventError,
   };
 }
