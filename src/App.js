@@ -19,6 +19,8 @@ import Certificate from "./pages/Dashboard/Certificate";
 import { EventInfoProvider } from "./contexts/EventInfoContext";
 import { UserProvider } from "./contexts/UserContext";
 
+import useToken from "./hooks/useToken";
+
 export default function App() {
   return (
     <>
@@ -31,7 +33,14 @@ export default function App() {
               <Route path="/enroll" element={<Enroll />} />
               <Route path="/sign-in" element={<SignIn />} />
 
-              <Route path="/dashboard" element={<Dashboard />}>
+              <Route
+                path="/dashboard"
+                element={
+                  <ProtectedRouteGuard>
+                    <Dashboard />
+                  </ProtectedRouteGuard>
+                }
+              >
                 <Route path="subscription" element={<FillSubscription />} />
                 <Route path="payment" element={<Payment />} />
                 <Route path="hotel" element={<Hotel />} />
@@ -45,4 +54,16 @@ export default function App() {
       </EventInfoProvider>
     </>
   );
+}
+
+function ProtectedRouteGuard({ children }) {
+  const token = useToken();
+
+  if (!token) {
+    return <Navigate to="/sign-in" />;
+  }
+
+  return <>
+    {children}
+  </>;
 }
