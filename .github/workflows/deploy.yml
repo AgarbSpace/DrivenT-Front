@@ -4,6 +4,8 @@ on:
       - main
 
 name: Build and Deploy
+env:
+  REACT_APP_API_BASE_URL: /api
 jobs:
   build:
     runs-on: drivent
