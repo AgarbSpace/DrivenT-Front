@@ -6,12 +6,12 @@ export default function useSignUp() {
   const {
     loading: signUpLoading,
     error: signUpError,
-    act: signUp
+    act: signUp,
   } = useAsync(userApi.signUp, false);
 
   return {
     signUpLoading,
     signUpError,
-    signUp
+    signUp,
   };
 }
