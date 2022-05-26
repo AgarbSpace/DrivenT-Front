@@ -1,3 +1,3 @@
 export default function Activities() {
-  return "Atividades: Em breve!";
+  return 'Atividades: Em breve!';
 }

@@ -1,3 +1,3 @@
 export default function Certificate() {
-  return "Certificado: Em breve!";
+  return 'Certificado: Em breve!';
 }

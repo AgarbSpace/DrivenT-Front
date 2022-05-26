@@ -1,7 +1,7 @@
-import { useState } from "react";
-import dayjs from "dayjs";
-import useInterval from "react-useinterval";
-import styled from "styled-components";
+import { useState } from 'react';
+import dayjs from 'dayjs';
+import useInterval from 'react-useinterval';
+import styled from 'styled-components';
 
 export default function Timer({ time, onZero = () => 0 }) {
   const [timeRemaining, setTimeRemaining] = useState(diffToDate(time));
@@ -35,22 +35,22 @@ export default function Timer({ time, onZero = () => 0 }) {
   return (
     <Grid>
       <CountdownBlock>
-        {timeRemaining.days.toString().padStart(2, "0")}
+        {timeRemaining.days.toString().padStart(2, '0')}
         <Label>dias</Label>
       </CountdownBlock>
       <Divider>:</Divider>
       <CountdownBlock>
-        {timeRemaining.hours.toString().padStart(2, "0")}
+        {timeRemaining.hours.toString().padStart(2, '0')}
         <Label>horas</Label>
       </CountdownBlock>
       <Divider>:</Divider>
       <CountdownBlock>
-        {timeRemaining.minutes.toString().padStart(2, "0")}
+        {timeRemaining.minutes.toString().padStart(2, '0')}
         <Label>minutos</Label>
       </CountdownBlock>
       <Divider>:</Divider>
       <CountdownBlock>
-        {timeRemaining.seconds.toString().padStart(2, "0")}
+        {timeRemaining.seconds.toString().padStart(2, '0')}
         <Label>segundos</Label>
       </CountdownBlock>
     </Grid>
@@ -97,16 +97,16 @@ function diffToDate(date) {
   const now = dayjs();
   let to = dayjs(date);
 
-  const days = to.diff(now, "days");
-  to = to.add(-days, "days");
+  const days = to.diff(now, 'days');
+  to = to.add(-days, 'days');
 
-  const hours = to.diff(now, "hours");
-  to = to.add(-hours, "hours");
+  const hours = to.diff(now, 'hours');
+  to = to.add(-hours, 'hours');
 
-  const minutes = to.diff(now, "minutes");
-  to = to.add(-minutes, "minutes");
+  const minutes = to.diff(now, 'minutes');
+  to = to.add(-minutes, 'minutes');
 
-  const seconds = to.diff(now, "seconds");
+  const seconds = to.diff(now, 'seconds');
 
   return {
     days,

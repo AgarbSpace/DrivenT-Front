@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default function NavigationButton({ active, children }) {
   return (
@@ -19,7 +19,7 @@ const Button = styled.button`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  ${props => props.active ? "background-color: #ccc;" : ""}
+  ${props => props.active ? 'background-color: #ccc;' : ''}
 
   &:hover {
     background-color: #ccc;

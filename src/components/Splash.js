@@ -1,11 +1,11 @@
-import Loader from "react-loader-spinner";
-import styled from "styled-components";
+import Loader from 'react-loader-spinner';
+import styled from 'styled-components';
 
-import Page from "./Page";
+import Page from './Page';
 
-import driventLogo from "../assets/images/drivent.png";
+import driventLogo from '../assets/images/drivent.png';
 
-export default function Splash({ loading = false, message = "" }) {
+export default function Splash({ loading = false, message = '' }) {
   return (
     <StyledPage background="#FA4098">
       <Grid>

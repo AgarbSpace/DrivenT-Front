@@ -50,7 +50,7 @@
       "linebreak-style": 0,
       "quotes": [
         "error",
-        "double"
+        "single"
       ],
       "semi": [
         "error",

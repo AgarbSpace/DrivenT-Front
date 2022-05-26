@@ -1,7 +1,7 @@
-import useAsync from "../useAsync";
-import useToken from "../useToken";
+import useAsync from '../useAsync';
+import useToken from '../useToken';
 
-import * as enrollmentApi from "../../services/enrollmentApi";
+import * as enrollmentApi from '../../services/enrollmentApi';
 
 export default function useSaveEnrollment() {
   const token = useToken();

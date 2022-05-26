@@ -1,22 +1,22 @@
-import { useContext, useState } from "react";
-import { toast } from "react-toastify";
-import { useNavigate } from "react-router-dom";
+import { useContext, useState } from 'react';
+import { toast } from 'react-toastify';
+import { useNavigate } from 'react-router-dom';
 
-import AuthLayout from "../../layouts/Auth";
+import AuthLayout from '../../layouts/Auth';
 
-import Input from "../../components/Form/Input";
-import Button from "../../components/Form/Button";
-import { Row, Title, Label } from "../../components/Auth";
-import Link from "../../components/Link";
+import Input from '../../components/Form/Input';
+import Button from '../../components/Form/Button';
+import { Row, Title, Label } from '../../components/Auth';
+import Link from '../../components/Link';
 
-import EventInfoContext from "../../contexts/EventInfoContext";
+import EventInfoContext from '../../contexts/EventInfoContext';
 
-import useSignUp from "../../hooks/api/useSignUp";
+import useSignUp from '../../hooks/api/useSignUp';
 
 export default function Enroll() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const { loadingSignUp, signUp } = useSignUp();
 
@@ -28,14 +28,14 @@ export default function Enroll() {
     event.preventDefault();
 
     if (password !== confirmPassword) {
-      toast("As senhas devem ser iguais!");
+      toast('As senhas devem ser iguais!');
     } else {
       try {
         await signUp(email, password);
-        toast("Inscrito com sucesso! Por favor, faça login.");
-        navigate("/sign-in");
+        toast('Inscrito com sucesso! Por favor, faça login.');
+        navigate('/sign-in');
       } catch (error) {
-        toast("Não foi possível fazer o cadastro!");
+        toast('Não foi possível fazer o cadastro!');
       }
     }
   }

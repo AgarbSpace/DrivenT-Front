@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export default styled.div`
   height: 100vh;
-  max-height: ${props => props.height || "600px"};
+  max-height: ${props => props.height || '600px'};
 
   width: 100%;
-  max-width: ${props => props.width || "1200px"};
+  max-width: ${props => props.width || '1200px'};
 
   border-radius: 20px;
   background-color: #fff;

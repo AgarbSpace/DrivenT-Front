@@ -1,12 +1,12 @@
-import { useContext, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useContext, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import Timer from "./Timer";
-import Page from "../../components/Page";
+import Timer from './Timer';
+import Page from '../../components/Page';
 
-import useIsDateAfter from "../../hooks/useIsDateAfter";
+import useIsDateAfter from '../../hooks/useIsDateAfter';
 
-import EventInfoContext from "../../contexts/EventInfoContext";
+import EventInfoContext from '../../contexts/EventInfoContext';
 
 export default function Countdown() {
   const { eventInfo, loadingEventInfo } = useContext(EventInfoContext);
@@ -15,16 +15,16 @@ export default function Countdown() {
 
   useEffect(() => {
     if (countdownOver) {
-      navigate("/enroll");
+      navigate('/enroll');
     }
   }, [countdownOver]);
 
   function onZero() {
-    navigate("/enroll");
+    navigate('/enroll');
   }
 
   if (loadingEventInfo) {
-    return "Loading...";
+    return 'Loading...';
   }
 
   return (

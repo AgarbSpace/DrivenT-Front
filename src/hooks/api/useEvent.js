@@ -1,6 +1,6 @@
-import useAsync from "../useAsync";
+import useAsync from '../useAsync';
 
-import * as eventApi from "../../services/eventApi";
+import * as eventApi from '../../services/eventApi';
 
 export default function useEvent() {
   const {

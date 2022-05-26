@@ -1,6 +1,6 @@
-import useAsync from "../useAsync";
+import useAsync from '../useAsync';
 
-import * as cepApi from "../../services/cepApi";
+import * as cepApi from '../../services/cepApi';
 
 export default function useCep() {
   const {

@@ -1,8 +1,8 @@
-import { createContext } from "react";
+import { createContext } from 'react';
 
-import Splash from "../components/Splash";
+import Splash from '../components/Splash';
 
-import useEvent from "../hooks/api/useEvent";
+import useEvent from '../hooks/api/useEvent';
 
 const EventInfoContext = createContext();
 export default EventInfoContext;
@@ -17,7 +17,7 @@ export function EventInfoProvider({ children }) {
   }
 
   if (eventError) {
-    let message = eventError.response ? eventError.response.data.message : "Could not connect to server. Please try again later.";
+    let message = eventError.response ? eventError.response.data.message : 'Could not connect to server. Please try again later.';
     return (
       <Splash message={message} />
     );

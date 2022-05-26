@@ -1,6 +1,6 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation } from 'react-router-dom';
 
-import styled from "styled-components";
+import styled from 'styled-components';
 
 import {
   FaFileContract,
@@ -8,9 +8,9 @@ import {
   FaBed,
   FaCalendarWeek,
   FaCertificate,
-} from "react-icons/fa";
+} from 'react-icons/fa';
 
-import NavigationButton from "./NavigationButton";
+import NavigationButton from './NavigationButton';
 
 export default function NavigationBar() {
   const location = useLocation();
@@ -22,35 +22,35 @@ export default function NavigationBar() {
   return (
     <Container>
       <Link to="/dashboard/subscription">
-        <NavigationButton active={isActive("/dashboard/subscription")}>
+        <NavigationButton active={isActive('/dashboard/subscription')}>
           <FaFileContract />
           <span>Inscrição</span>
         </NavigationButton>
       </Link>
 
       <Link to="/dashboard/payment">
-        <NavigationButton active={isActive("/dashboard/paymen")}>
+        <NavigationButton active={isActive('/dashboard/paymen')}>
           <FaMoneyBill />
           <span>Pagamento</span>
         </NavigationButton>
       </Link>
 
       <Link to="/dashboard/hotel">
-        <NavigationButton active={isActive("/dashboard/hote")}>
+        <NavigationButton active={isActive('/dashboard/hote')}>
           <FaBed />
           <span>Hotel</span>
         </NavigationButton>
       </Link>
 
       <Link to="/dashboard/activities">
-        <NavigationButton active={isActive("/dashboard/activitie")}>
+        <NavigationButton active={isActive('/dashboard/activitie')}>
           <FaCalendarWeek />
           <span>Atividades</span>
         </NavigationButton>
       </Link>
 
       <Link to="/dashboard/certificate">
-        <NavigationButton active={isActive("/dashboard/certificat")}>
+        <NavigationButton active={isActive('/dashboard/certificat')}>
           <FaCertificate />
           <span>Certificado</span>
         </NavigationButton>

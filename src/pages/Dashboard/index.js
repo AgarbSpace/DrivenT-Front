@@ -1,12 +1,12 @@
-import { useContext } from "react";
-import { Outlet } from "react-router-dom";
-import styled from "styled-components";
+import { useContext } from 'react';
+import { Outlet } from 'react-router-dom';
+import styled from 'styled-components';
 
-import EventInfoContext from "../../contexts/EventInfoContext";
+import EventInfoContext from '../../contexts/EventInfoContext';
 
-import NavigationBar from "../../components/Dashboard/NavigationBar";
+import NavigationBar from '../../components/Dashboard/NavigationBar';
 
-import DashboardLayout from "../../layouts/Dashboard";
+import DashboardLayout from '../../layouts/Dashboard';
 
 export default function Dashboard() {
   const { eventInfo } = useContext(EventInfoContext);

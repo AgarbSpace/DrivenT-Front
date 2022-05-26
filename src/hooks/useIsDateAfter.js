@@ -1,4 +1,4 @@
-import dayjs from "dayjs";
+import dayjs from 'dayjs';
 
 export default function useIsDateAfter(date) {
   const countdownDate = dayjs(date);
