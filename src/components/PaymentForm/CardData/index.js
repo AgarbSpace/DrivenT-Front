@@ -3,7 +3,6 @@ import React from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import { toast } from 'react-toastify';
-import { useForm } from '../../../hooks/useForm';
 import { CardContainer, CardForm, FlexContainer, SubmitButton } from '../Styleds';
 
 export default class PaymentForm extends React.Component {

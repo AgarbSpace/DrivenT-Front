@@ -1,8 +1,6 @@
 import { Box, Typography } from '@material-ui/core';
-import { CardContainer, CardForm, FlexContainer, Modality, PaymentSubTitles, Price, TicketModality } from './Styleds';
-import Cards from 'react-credit-cards';
+import { Modality, PaymentSubTitles, Price, TicketModality } from './Styleds';
 import 'react-credit-cards/es/styles-compiled.css';
-import { useState } from 'react';
 import React from 'react';
 import CardData from './CardData';
 
