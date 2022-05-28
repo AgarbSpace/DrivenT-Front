@@ -5,7 +5,6 @@ import * as enrollmentApi from '../../services/enrollmentApi';
 
 export default function useEnrollment() {
   const token = useToken();
-  
   const {
     data: enrollment,
     loading: enrollmentLoading,
