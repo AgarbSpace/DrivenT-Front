@@ -1,13 +1,12 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box } from '@material-ui/core';
 import { Modality, PaymentSubTitles, Price, TicketModality } from './Styleds';
 import 'react-credit-cards/es/styles-compiled.css';
 import React from 'react';
 import CardData from './CardData';
 
 export default function PaymentForm() {
-  return ( 
+  return (
     <>
-      <Typography variant="h4">Ingresso e pagamento</Typography>
       <Box>
         <PaymentSubTitles>Ingresso escolhido</PaymentSubTitles>
         <TicketModality>

@@ -7,7 +7,6 @@ const PaymentSubTitles = styled(Typography)`
   line-height: 23px!important;
   letter-spacing: 0em!important;
   text-align: left!important;
-  margin-top: 35px!important;
   color: #8E8E8E!important;
 `;
 
@@ -67,7 +66,7 @@ const CardForm = styled.form`
 
 `;
 
-const FlexContainer= styled(Box)`
+const FlexContainer = styled(Box)`
   display: flex;
 
   input{
@@ -103,7 +102,7 @@ const SubmitButton = styled.button`
       background-color: #898989;
       cursor: pointer;
   }
-`; 
+`;
 
 export {
   PaymentSubTitles,
