@@ -17,20 +17,20 @@ export default class PaymentForm extends React.Component {
   handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
   }
-  
+
   handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     this.setState({ [name]: value });
   }
 
   handleSubmit = (e) => {
     e.preventDefault();
-    if(!this.state.cvc || !this.state.expiry || !this.state.name ||!this.state.number) {
+    if (!this.state.cvc || !this.state.expiry || !this.state.name || !this.state.number) {
       toast('Não foi possível salvar suas informações!');
     }
   }
-  
+
   render() {
     return (
       <Box>
@@ -43,14 +43,14 @@ export default class PaymentForm extends React.Component {
             number={this.state.number}
           />
           <CardForm onSubmit={this.handleSubmit}>
-        	  <input
+            <input
               type="tel"
               name="number"
               placeholder="Card Number"
               onChange={this.handleInputChange}
               onFocus={this.handleInputFocus}
             />
-        	  <input
+            <input
               type="tel"
               name="name"
               placeholder="Name"
@@ -58,14 +58,14 @@ export default class PaymentForm extends React.Component {
               onFocus={this.handleInputFocus}
             />
             <FlexContainer>
-        	    <input
+              <input
                 type="tel"
                 name="expiry"
                 placeholder="Valid Thru"
                 onChange={this.handleInputChange}
                 onFocus={this.handleInputFocus}
               />
-        	    <input
+              <input
                 type="tel"
                 name="cvc"
                 placeholder="Cvc"

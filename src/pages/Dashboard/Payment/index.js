@@ -33,7 +33,7 @@ export default function Payment() {
             <Text>Você precisa completar sua inscrição antes de prosseguir para escolha de ingresso</Text>
           </Box>
           :
-          <HasEnrollment 
+          <HasEnrollment
             ticketModality={ticketModality}
             setTicketModality={setTicketModality}
             includeHotel={includeHotel}
@@ -44,12 +44,11 @@ export default function Payment() {
             bookTicket={bookTicket}
           />
       }
-      
     </>
   );
 }
 
-function HasEnrollment(
+function HasEnrollment({
   ticketModality,
   setTicketModality,
   includeHotel,
@@ -58,7 +57,7 @@ function HasEnrollment(
   setTotal,
   setBookTicket,
   bookTicket
-) {
+}) {
   return (
     <>
       {!bookTicket &&
