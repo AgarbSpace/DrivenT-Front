@@ -70,13 +70,13 @@ export default function TicketSelection({
               Com hotel <span>+ R$ 350</span>
             </SelectionButton>
           </Flex>
+        </>
+      }
 
-          {includeHotel !== '' &&
-            <>
-              <Text>Fechado! O total ficou em R$ {total}. Agora é só confirmar: </Text>
-              <SubmitButton onClick={handleSubmit}>reservar ingresso</SubmitButton>
-            </>
-          }
+      {(includeHotel !== '' || ticketModality === 'online') &&
+        <>
+          <Text>Fechado! O total ficou em R$ {total}. Agora é só confirmar: </Text>
+          <SubmitButton onClick={handleSubmit}>reservar ingresso</SubmitButton>
         </>
       }
     </>
