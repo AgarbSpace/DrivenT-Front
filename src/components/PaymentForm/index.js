@@ -1,17 +1,28 @@
 import { Box } from '@material-ui/core';
 import { Modality, PaymentSubTitles, Price, TicketModality } from './Styleds';
 import 'react-credit-cards/es/styles-compiled.css';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import CardData from './CardData';
 
-export default function PaymentForm() {
+export default function PaymentForm({ ticketModality, total, includeHotel }) {
+  const [hotelIncluded, setHotelIncluded] = useState(' + com hotel');
+
+  useEffect(() => {
+    if(includeHotel === 'no') {
+      setHotelIncluded(' + sem hotel');
+    }
+    if(ticketModality === 'online') {
+      setHotelIncluded('');
+    }
+  }, []);
+  
   return (
     <>
       <Box>
         <PaymentSubTitles>Ingresso escolhido</PaymentSubTitles>
         <TicketModality>
-          <Modality>Presencial + Com Hotel</Modality>
-          <Price>R$ 600</Price>
+          <Modality>{ticketModality}{hotelIncluded}</Modality>
+          <Price>{total}</Price>
         </TicketModality>
       </Box>
       <Box>
