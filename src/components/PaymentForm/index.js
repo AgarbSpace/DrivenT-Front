@@ -3,9 +3,11 @@ import { Modality, PaymentSubTitles, Price, TicketModality } from './Styleds';
 import 'react-credit-cards/es/styles-compiled.css';
 import React, { useEffect, useState } from 'react';
 import CardData from './CardData';
+import useToken from '../../hooks/useToken';
 
 export default function PaymentForm({ ticketModality, total, includeHotel }) {
   const [hotelIncluded, setHotelIncluded] = useState(' + com hotel');
+  const token  = useToken();
 
   useEffect(() => {
     if(includeHotel === 'no') {
@@ -27,7 +29,7 @@ export default function PaymentForm({ ticketModality, total, includeHotel }) {
       </Box>
       <Box>
         <PaymentSubTitles>Pagamento</PaymentSubTitles>
-        <CardData />
+        <CardData ticketModality = {ticketModality} includeHotel = {includeHotel} token = {token}/>
       </Box>
     </>
   );
