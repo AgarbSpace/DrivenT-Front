@@ -8,6 +8,7 @@ const PaymentSubTitles = styled(Typography)`
   letter-spacing: 0em!important;
   text-align: left!important;
   color: #8E8E8E!important;
+  margin-top: 30px!important;
 `;
 
 const TicketModality = styled(Box)`
@@ -104,6 +105,37 @@ const SubmitButton = styled.button`
   }
 `;
 
+const Confirmation = styled.div`
+  display: flex;
+  margin-top: 19px;
+
+  ion-icon {
+    width: 40px;
+    height: 40px;
+    color: #36B853;
+  }
+`;
+
+const ConfirmationTexts = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-left: 14px;
+
+  span {
+    font-family: 'Roboto';
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 19px;
+    letter-spacing: 0em;
+    text-align: left;
+
+  }
+  
+  span:nth-child(2){
+    font-weight: 400;
+  }
+`;
+
 export {
   PaymentSubTitles,
   TicketModality,
@@ -112,5 +144,7 @@ export {
   CardContainer,
   CardForm,
   FlexContainer,
-  SubmitButton
+  SubmitButton,
+  Confirmation,
+  ConfirmationTexts
 };
