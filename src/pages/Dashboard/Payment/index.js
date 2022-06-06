@@ -72,7 +72,7 @@ function HasEnrollment({
         />
       }
 
-      {bookTicket && <PaymentForm ticketModality={ticketModality} includeHotel = {includeHotel} total = {total}/>}
+      {bookTicket && <PaymentForm ticketModality={ticketModality} includeHotel={includeHotel} total={total} />}
     </>
   );
 }
