@@ -21,18 +21,18 @@ export default class PaymentForm extends React.Component {
     includeHotel: '',
     token: ''
   }
-  
+
   constructor(props) {
     super(props);
-    
-    if(props.ticketModality === 'online') {
-      this.ticket = { modality: 'online', includeHotel: false, token: props.token };
+
+    if (props.ticketModality === 'Online') {
+      this.ticket = { modality: 'Online', includeHotel: false, token: props.token };
       return;
     }
 
     this.ticket = { modality: props.ticketModality };
 
-    if(props.includeHotel === 'no') {
+    if (props.includeHotel === 'no') {
       this.ticket = { ...this.ticket, includeHotel: false, token: props.token };
       return;
     }
@@ -43,23 +43,24 @@ export default class PaymentForm extends React.Component {
   handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
   }
-  
+
   handleInputChange = (e) => {
     const { name, value } = e.target;
-    
+
     this.setState({ [name]: value });
   }
-  
-  handleSubmit = async(e) => {
+
+  // eslint-disable-next-line space-before-function-paren
+  handleSubmit = async (e) => {
     if (!this.state.cvc || !this.state.expiry || !this.state.name || !this.state.number) {
       toast('Não foi possível salvar suas informações!');
       return;
     }
-    
     try {
       await postTicket(this.ticket);
       this.setState({ confirmed: true });
     } catch (error) {
+      // eslint-disable-next-line
       console.log(error);
     }
   }
@@ -67,7 +68,7 @@ export default class PaymentForm extends React.Component {
   render() {
     return (
       <Box>
-        {this.state.confirmed === false ? 
+        {this.state.confirmed === false ?
           <>
             <CardContainer>
               <Cards
@@ -112,7 +113,7 @@ export default class PaymentForm extends React.Component {
             </CardContainer>
             <SubmitButton type='submit' onClick={this.handleSubmit}>FINALIZAR PAGAMENTO</SubmitButton>
           </>
-          : 
+          :
           <>
             <Confirmation>
               <ion-icon name="checkmark-circle"></ion-icon>
