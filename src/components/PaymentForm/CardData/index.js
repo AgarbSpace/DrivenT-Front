@@ -3,6 +3,7 @@ import React from 'react';
 import Cards from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import { toast } from 'react-toastify';
+import { postTicket } from '../../../services/ticket';
 import { CardContainer, CardForm, Confirmation, ConfirmationTexts, FlexContainer, SubmitButton } from '../Styleds';
 
 export default class PaymentForm extends React.Component {
@@ -14,7 +15,31 @@ export default class PaymentForm extends React.Component {
     number: '',
     confirmed: false
   };
+
+  ticket = {
+    modality: '',
+    includeHotel: '',
+    token: ''
+  }
   
+  constructor(props) {
+    super(props);
+    
+    if(props.ticketModality === 'online') {
+      this.ticket = { modality: 'online', includeHotel: false, token: props.token };
+      return;
+    }
+
+    this.ticket = { modality: props.ticketModality };
+
+    if(props.includeHotel === 'no') {
+      this.ticket = { ...this.ticket, includeHotel: false, token: props.token };
+      return;
+    }
+
+    this.ticket = { ...this.ticket, includeHotel: true, token: props.token };
+  }
+
   handleInputFocus = (e) => {
     this.setState({ focus: e.target.name });
   }
@@ -25,12 +50,18 @@ export default class PaymentForm extends React.Component {
     this.setState({ [name]: value });
   }
   
-  handleSubmit = (e) => {
+  handleSubmit = async(e) => {
     if (!this.state.cvc || !this.state.expiry || !this.state.name || !this.state.number) {
       toast('Não foi possível salvar suas informações!');
       return;
     }
-    this.setState({ confirmed: true });
+    
+    try {
+      await postTicket(this.ticket);
+      this.setState({ confirmed: true });
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   render() {
