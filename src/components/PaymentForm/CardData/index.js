@@ -25,6 +25,8 @@ export default class PaymentForm extends React.Component {
   constructor(props) {
     super(props);
 
+    if (props.hasTicket) this.state.confirmed = true;
+
     if (props.ticketModality === 'Online') {
       this.ticket = { modality: 'Online', includeHotel: false, token: props.token };
       return;

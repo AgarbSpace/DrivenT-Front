@@ -19,4 +19,13 @@ export async function getPersonalInformations(token) {
 
   return response.data;
 }
-//
+
+export async function getTypeOfEnrollment(enrollmentId, token) {
+  const response = await api.get(`/enrollments/${enrollmentId}`, {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  return response.data;
+}

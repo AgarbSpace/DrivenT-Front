@@ -6,13 +6,12 @@ const Text = styled(Typography)`
   font-family: 'Roboto';
 
   padding-bottom: 16px;
+  padding-top: 30px;
 `;
 
 const Flex = styled(Box)`
   display: flex;
   gap: 24px;
-
-  padding-bottom: 40px;
 `;
 
 const SelectionButton = styled.button`
