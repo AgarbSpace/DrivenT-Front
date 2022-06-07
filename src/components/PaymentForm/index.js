@@ -5,31 +5,36 @@ import React, { useEffect, useState } from 'react';
 import CardData from './CardData';
 import useToken from '../../hooks/useToken';
 
-export default function PaymentForm({ ticketModality, total, includeHotel }) {
-  const [hotelIncluded, setHotelIncluded] = useState(' + com hotel');
-  const token  = useToken();
+export default function PaymentForm({ ticketModality, total, includeHotel, hasTicket }) {
+  const [hotelIncluded, setHotelIncluded] = useState(' + Com Hotel');
+  const token = useToken();
 
   useEffect(() => {
-    if(includeHotel === 'no') {
-      setHotelIncluded(' + sem hotel');
+    if (includeHotel === 'no') {
+      setHotelIncluded(' + Sem Hotel');
     }
-    if(ticketModality === 'online') {
+    if (ticketModality === 'Online') {
       setHotelIncluded('');
     }
   }, []);
-  
+
   return (
     <>
       <Box>
         <PaymentSubTitles>Ingresso escolhido</PaymentSubTitles>
         <TicketModality>
           <Modality>{ticketModality}{hotelIncluded}</Modality>
-          <Price>{total}</Price>
+          <Price>R$ {total}</Price>
         </TicketModality>
       </Box>
       <Box>
         <PaymentSubTitles>Pagamento</PaymentSubTitles>
-        <CardData ticketModality = {ticketModality} includeHotel = {includeHotel} token = {token}/>
+        <CardData
+          ticketModality={ticketModality}
+          includeHotel={includeHotel}
+          token={token}
+          hasTicket={hasTicket}
+        />
       </Box>
     </>
   );
