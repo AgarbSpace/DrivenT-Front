@@ -48,6 +48,7 @@ const BedSelection = styled.button`
   all: unset;
 
   ${props => props.selected && 'color: #FF4791;'};
+  pointer-events: ${props => props.occupied ? 'none' : 'inherit'};
   cursor: ${props => props.occupied ? 'not-allowed' : 'pointer'};
 `;
 

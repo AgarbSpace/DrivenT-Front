@@ -1,8 +1,6 @@
 import PersonIcon from '@mui/icons-material/Person';
 import PersonOutlineIcon from '@mui/icons-material/PersonOutline';
 import { useState } from 'react';
-import useHotel from '../../../hooks/api/useHotel';
-import Splash from '../../Splash';
 
 import {
   BedSelection,
@@ -13,18 +11,26 @@ import {
   Text
 } from './style';
 
-export default function Rooms() {
-  const { hotels, hotelsLoading } = useHotel();
-  const [selectedRoom, setSelectedRoom] = useState(false);
-  let rooms = [];
+export default function Rooms({ rooms }) {
+  const [selectedBedId, setSelectedBedId] = useState(0);
 
-  if (hotels) {
-    rooms = hotels[0].Room;
-  };
+  let selectedRoom = 0;
 
-  if (hotelsLoading) return <Splash loading />;
+  rooms.forEach(room => (
+    room.Beds.forEach(bed => {
+      if (bed.selected) bed.selected = false;
 
-  console.log(rooms);
+      if (room.selected && room.id !== selectedRoom)
+        room.selected = false;
+
+      if (bed.id === selectedBedId) {
+        bed.selected = true;
+        room.selected = true;
+        selectedRoom = bed.roomId;
+      }
+    })
+  ));
+
   return (
     <>
       <Text>Ótima pedida! Agora escolha seu quarto</Text>
@@ -33,30 +39,30 @@ export default function Rooms() {
           <Room
             key={room.id}
             room={room}
+            selectedBedId={setSelectedBedId}
             selectedRoom={selectedRoom}
-            setSelectedRoom={setSelectedRoom}
           />
         )}
       </RoomsContainer>
 
-      {selectedRoom && <SubmitButton>Reservar quarto</SubmitButton>}
+      {selectedBedId !== 0 && <SubmitButton>Reservar quarto</SubmitButton>}
     </>
   );
 };
 
-function Room({ room, selectedRoom, setSelectedRoom }) {
-  const beds = room.Beds;
-
-  const teste = beds.filter(bed => !bed.occupied);
-  console.log(teste);
-  //console.log(beds);
+function Room({ room, selectedBedId }) {
+  const occupiedRooms = room.Beds.filter(bed => !bed.occupied);
 
   return (
-    <RoomContainer occupied={teste.length === 0} selected={false}>
+    <RoomContainer occupied={occupiedRooms.length === 0} selected={room.selected}>
       <RoomNumber occupied={false}>{room.number}</RoomNumber>
       <div>
-        {beds.map(bed =>
-          <Bed key={bed.id} bed={bed} />
+        {room.Beds.map(bed =>
+          <Bed
+            key={bed.id}
+            bed={bed}
+            selectedBedId={selectedBedId}
+          />
         )}
       </div>
 
@@ -64,15 +70,14 @@ function Room({ room, selectedRoom, setSelectedRoom }) {
   );
 };
 
-function Bed({ bed }) {
-  const [selectedBed, setSelectedBed] = useState(false);
-
+function Bed({ bed, selectedBedId }) {
   return (
     <BedSelection
-      selected={selectedBed}
-      onClick={() => setSelectedBed(!selectedBed)}
+      selected={bed.selected}
+      occupied={bed.occupied}
+      onClick={() => selectedBedId(bed.id)}
     >
-      {bed.occupied ?
+      {(bed.occupied || bed.selected) ?
         <PersonIcon />
         :
         <PersonOutlineIcon />
