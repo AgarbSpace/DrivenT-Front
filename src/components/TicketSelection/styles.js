@@ -1,15 +1,15 @@
-import { Box, Typography } from '@material-ui/core';
 import styled from 'styled-components';
 
-const Text = styled(Typography)`
+const Text = styled.h3`
   color: #8E8E8E;
   font-family: 'Roboto';
+  font-size: 20px;
 
   padding-bottom: 16px;
   padding-top: 30px;
 `;
 
-const Flex = styled(Box)`
+const Flex = styled.div`
   display: flex;
   gap: 24px;
 `;
