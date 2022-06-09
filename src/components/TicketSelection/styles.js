@@ -6,13 +6,12 @@ const Text = styled.h3`
   font-size: 20px;
 
   padding-bottom: 16px;
+  padding-top: 30px;
 `;
 
 const Flex = styled.div`
   display: flex;
   gap: 24px;
-
-  padding-bottom: 40px;
 `;
 
 const SelectionButton = styled.button`

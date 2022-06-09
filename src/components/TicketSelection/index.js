@@ -17,7 +17,7 @@ export default function TicketSelection({
   function handleTicketSelection(ticket) {
     setTicketModality(ticket);
 
-    if (ticket === 'online') setTotal(100);
+    if (ticket === 'Online') setTotal(100);
     else setTotal(250);
   }
 
@@ -37,21 +37,21 @@ export default function TicketSelection({
       <Text>Primeiro, escolha sua modalidade de ingresso</Text>
       <Flex>
         <SelectionButton
-          selected={ticketModality === 'presencial'}
-          onClick={() => handleTicketSelection('presencial')}
+          selected={ticketModality === 'Presencial'}
+          onClick={() => handleTicketSelection('Presencial')}
         >
           Presencial <span>R$ 250</span>
         </SelectionButton>
 
         <SelectionButton
-          selected={ticketModality === 'online'}
-          onClick={() => handleTicketSelection('online')}
+          selected={ticketModality === 'Online'}
+          onClick={() => handleTicketSelection('Online')}
         >
           Online <span>R$ 100</span>
         </SelectionButton>
       </Flex>
 
-      {ticketModality === 'presencial' &&
+      {ticketModality === 'Presencial' &&
         <>
           <Text>Ótimo! Agora escolha sua modalidade de hospedagem</Text>
 
@@ -73,7 +73,7 @@ export default function TicketSelection({
         </>
       }
 
-      {(includeHotel !== '' || ticketModality === 'online') &&
+      {(includeHotel !== '' || ticketModality === 'Online') &&
         <>
           <Text>Fechado! O total ficou em R$ {total}. Agora é só confirmar: </Text>
           <SubmitButton onClick={handleSubmit}>reservar ingresso</SubmitButton>
